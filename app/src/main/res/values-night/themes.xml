@@ -1,0 +1,108 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_dark_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_dark_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_dark_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_dark_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_dark_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_dark_error</item>
+        <item name="colorErrorContainer">@color/md_theme_dark_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_dark_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_dark_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_dark_background</item>
+        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
+        <item name="colorSurface">@color/md_theme_dark_surface</item>
+        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_dark_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_dark_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+        <item name="fontFamily">@font/poppin_regular</item>
+
+        <item name="textAppearanceDisplayLarge">@style/textDisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/textDisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/textDisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/textHeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/textHeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/textHeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/textTitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/textTitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/textTitleSmall</item>
+        <item name="textAppearanceLabelLarge">@style/textLabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/textLabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/textLabelSmall</item>
+        <item name="textAppearanceBodyLarge">@style/textBodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/textBodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/textBodySmall</item>
+    </style>
+
+    <style name="textDisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textDisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textDisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textHeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textHeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textHeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textTitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textTitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textTitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textLabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textLabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textLabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textBodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="textBodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+
+    <style name="textBodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/poppin_regular</item>
+    </style>
+</resources>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/student_navigation"
+    app:startDestination="@+id/navigation_home_students">
+
+    <fragment
+        android:id="@+id/navigation_home_students"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.HomeStudentFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home_student" >
+        <action
+            android:id="@+id/action_navigation_home_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_playFragment"
+            app:destination="@id/playFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_categoryScoreFragment"
+            app:destination="@id/categoryScoreFragment" />
+        <action
+            android:id="@+id/action_navigation_home_students_to_tutorialVideoFragment"
+            app:destination="@id/tutorialVideoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_studyFragment_to_materialStudyFragment"
+            app:destination="@id/materialStudyFragment" />
+        <argument
+            android:name="kategori_menu"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_studyFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.PlayFragment"
+        android:label="fragment_play"
+        tools:layout="@layout/fragment_play" >
+        <action
+            android:id="@+id/action_playFragment_to_guessFragment"
+            app:destination="@id/guessFragment" />
+        <action
+            android:id="@+id/action_playFragment_to_pairFragment"
+            app:destination="@id/pairFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/materialStudyFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.material_study.MaterialStudyFragment"
+        android:label="fragment_material_study"
+        tools:layout="@layout/fragment_material_study" >
+        <argument
+            android:name="tipe_materi"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_materialStudyFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <argument android:name="nama_tipe"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.question.QuestionFragment"
+        android:label="fragment_question"
+        tools:layout="@layout/fragment_question" >
+        <argument
+            android:name="id_materi_belajar"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="tipe_materi_belajar"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/guessFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.guess.GuessFragment"
+        android:label="fragment_guess"
+        tools:layout="@layout/fragment_guess" >
+        <action
+            android:id="@+id/action_guessFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/playFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pairFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.pair.PairFragment"
+        android:label="fragment_pair"
+        tools:layout="@layout/fragment_pair" >
+        <action
+            android:id="@+id/action_pairFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/playFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ScoreFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.ScoreFragment"
+        android:label="fragment_score"
+        tools:layout="@layout/fragment_score">
+        <argument
+            android:name="tipe_materi_score"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="nama_tipe_score"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="id_siswa"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryScoreFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.kategory.CategoryScoreFragment"
+        android:label="fragment_category_score"
+        tools:layout="@layout/fragment_category_score" >
+        <action
+            android:id="@+id/action_categoryScoreFragment_to_scoreFragment"
+            app:destination="@id/ScoreFragment" />
+        <action
+            android:id="@+id/action_categoryScoreFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="correct_number"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="total_question"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_resultFragment_to_playFragment2"
+            app:destination="@id/playFragment"
+            app:popUpTo="@id/playFragment" />
+        <argument
+            android:name="type"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="id_siswa"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialVideoFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.tutorial.TutorialVideoFragment"
+        android:label="fragment_tutorial_video"
+        tools:layout="@layout/fragment_tutorial_video" >
+        <action
+            android:id="@+id/action_tutorialVideoFragment_to_playVideoFragment"
+            app:destination="@id/playVideoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playVideoFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.tutorial.play_video.PlayVideoFragment"
+        android:label="fragment_play_video"
+        tools:layout="@layout/fragment_play_video" >
+        <argument
+            android:name="data"
+            app:argType="com.tribuanabagus.belajarbahasainggris.local_db.VideoPembelajaran" />
+    </fragment>
+</navigation>

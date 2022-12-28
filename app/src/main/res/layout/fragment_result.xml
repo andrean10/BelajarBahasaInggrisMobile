@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_result"
+        android:orientation="vertical"
+        tools:context=".view.main.ui.student.ResultFragment">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/dimen_24"
+        android:background="@drawable/bg_shape1"
+        android:src="@drawable/ic_back"
+        android:visibility="invisible"
+        android:layout_marginStart="@dimen/dimen_24"/>
+
+    <ProgressBar
+        android:id="@+id/pb_loader"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dimen_48"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_back"
+        android:layout_centerHorizontal="true"/>
+
+    <include
+        android:id="@+id/layout_empty"
+        android:visibility="gone"
+        layout="@layout/empty_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/img_congrat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="image success"
+            android:src="@drawable/ic_medal"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/img_fail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="image fail"
+            android:src="@drawable/ic_fail"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_result_conclusion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:text="Sangat Memuaskan" />
+
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppin_regular"
+            android:textAlignment="center"
+            android:textColor="#FAF7F7"
+            android:textSize="20sp"
+            tools:text="Kamu menjawab 6 soal dengan benar dari total 10 soal" />
+
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/bg_shape3"
+            android:text="Selesai"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>
