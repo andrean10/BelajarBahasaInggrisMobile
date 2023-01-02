@@ -1,6 +1,7 @@
 package com.tribuanabagus.belajarbahasainggris.utils
 
 import com.tribuanabagus.belajarbahasainggris.R
+import com.tribuanabagus.belajarbahasainggris.local_db.Hafalan
 import com.tribuanabagus.belajarbahasainggris.local_db.VideoPembelajaran
 
 object UtilsData {
@@ -11,7 +12,8 @@ object UtilsData {
         VideoPembelajaran(
             title = "BAHASA INGGRIS KELAS 1 UNIT 1",
             description = "Kurikulum Merdeka",
-            url = "https://www.youtube.com/watch?v=sxkwdSzotV4"
+//            url = "https://www.youtube.com/watch?v=sxkwdSzotV4"
+            url = "v=sxkwdSzotV4",
         ),
         VideoPembelajaran(
             title = "BAHASA INGGRIS KELAS 1 UNIT 2",
@@ -37,6 +39,21 @@ object UtilsData {
             title = "BAHASA INGGRIS KELAS 1 UNIT 6",
             description = "Kurikulum Merdeka",
             url = "https://www.youtube.com/watch?v=yaLUPpA64tE"
+        ),
+    )
+
+    val dataHafalan = listOf(
+        Hafalan(
+            title = "Memorization 1",
+            description = "Hafalan 1",
+        ),
+        Hafalan(
+            title = "Memorization 2",
+            description = "Hafalan 2",
+        ),
+        Hafalan(
+            title = "Memorization 3",
+            description = "Hafalan 3",
         ),
     )
 }

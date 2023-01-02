@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_navigation_home_students_to_tutorialVideoFragment"
             app:destination="@id/tutorialVideoFragment" />
+        <action
+            android:id="@+id/action_navigation_home_students_to_hafalanFragment"
+            app:destination="@id/hafalanFragment" />
     </fragment>
 
     <fragment
@@ -176,4 +179,9 @@
             android:name="data"
             app:argType="com.tribuanabagus.belajarbahasainggris.local_db.VideoPembelajaran" />
     </fragment>
+    <fragment
+        android:id="@+id/hafalanFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.hapalan.HafalanFragment"
+        android:label="fragment_hafalan"
+        tools:layout="@layout/fragment_hafalan" />
 </navigation>

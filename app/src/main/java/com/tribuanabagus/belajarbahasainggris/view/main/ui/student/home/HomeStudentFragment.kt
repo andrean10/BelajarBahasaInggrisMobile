@@ -3,7 +3,6 @@ package com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.tribuanabagus.belajarbahasainggris.network.ApiConfig.Companion.URL_IM
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsData.dataSlider
 import com.tribuanabagus.belajarbahasainggris.view.auth.AuthActivity
-import com.tribuanabagus.belajarbahasainggris.view.dialog.LoadingDialogFragment.Companion.TAG
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.profile.UserProfileActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.adapter.HomeSliderAdapter
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.viewmodel.HomeStudentViewModel
@@ -62,7 +60,6 @@ class HomeStudentFragment : Fragment() {
     private fun prepareSlider() {
         homeSliderAdapter = HomeSliderAdapter()
         homeSliderAdapter.setData(dataSlider)
-
         binding.sliderView.apply {
             setSliderAdapter(homeSliderAdapter)
             setIndicatorAnimation(IndicatorAnimationType.WORM)
@@ -75,6 +72,9 @@ class HomeStudentFragment : Fragment() {
         with(binding) {
             menuVideoPembelajaran.setOnClickListener {
                 findNavController().navigate(R.id.action_navigation_home_students_to_tutorialVideoFragment)
+            }
+            menuHafalan.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_students_to_hafalanFragment)
             }
 //                cardMenu1 -> {
 //                    findNavController().navigate(R.id.action_navigation_home_to_studyFragment)
