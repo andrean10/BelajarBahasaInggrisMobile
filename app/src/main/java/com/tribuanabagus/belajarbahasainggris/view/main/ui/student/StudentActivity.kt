@@ -27,21 +27,21 @@ class StudentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //play music as long as lifecycle this activity not destroyed
-//        mediaPlayer = MediaPlayer()
-//        audioRaw = applicationContext.resources.openRawResourceFd(R.raw.speech_intro)
-//        prepareMediaPlayer()
+        mediaPlayer = MediaPlayer()
+        audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app_new)
+        prepareMediaPlayer()
 
 
-//        mediaPlayer.setOnCompletionListener (object: MediaPlayer.OnCompletionListener{
-//            override fun onCompletion(_mediaPlayer: MediaPlayer) {
-//                isFinished = true
-//                _mediaPlayer.release()
-//                mediaPlayer = MediaPlayer()
-//                audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app)
-//                mediaPlayer.isLooping = true
-//                prepareMediaPlayer()
-//            }
-//        })
+        mediaPlayer.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
+            override fun onCompletion(_mediaPlayer: MediaPlayer) {
+                isFinished = true
+                _mediaPlayer.release()
+                mediaPlayer = MediaPlayer()
+                audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app_new)
+                mediaPlayer.isLooping = true
+                prepareMediaPlayer()
+            }
+        })
 //        Log.d(TAG,"oncreate")
     }
 
@@ -66,26 +66,26 @@ class StudentActivity : AppCompatActivity() {
     }
 
 
-//    override fun onRestart() {
-//        super.onRestart()
-////        mediaPlayer.start()
-//        Log.d(TAG,"onrestart")
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        mediaPlayer.start()
-//        Log.d(TAG,"onstart")
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        mediaPlayer.pause()
-//        Log.d(TAG,"onstop")
-//    }
+    override fun onRestart() {
+        super.onRestart()
+        mediaPlayer.start()
+        Log.d(TAG, "onrestart")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mediaPlayer.start()
+        Log.d(TAG, "onstart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mediaPlayer.pause()
+        Log.d(TAG, "onstop")
+    }
 
     override fun onDestroy() {
-//        mediaPlayer.release()
+        mediaPlayer.release()
         super.onDestroy()
     }
 }

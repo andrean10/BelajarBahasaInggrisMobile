@@ -16,6 +16,7 @@ class UserPreference(context: Context) {
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_USER_EMAIL = "user_email"
         private const val KEY_USER_ROLE = "user_role"
+        private const val KEY_USER_ROLE_NAME = "user_role_name"
         private const val KEY_USER_PASSWORD = "user_password"
         private const val KEY_USER_IMAGE = "user_image"
 
@@ -29,9 +30,9 @@ class UserPreference(context: Context) {
             putString(KEY_USER_NAME, values.nama)
             putString(KEY_USER_EMAIL, values.email)
             putInt(KEY_USER_ROLE, values.role ?: 0)
+            if (values.roleName != null) putString(KEY_USER_ROLE_NAME, values.roleName)
             putString(KEY_USER_PASSWORD, values.password)
             putString(KEY_USER_IMAGE, values.gambar)
-//            putString(KEY_USER_CONTACT, values.numberPhone)
         }
     }
 
@@ -47,6 +48,7 @@ class UserPreference(context: Context) {
             nama = preferences.getString(KEY_USER_NAME, ""),
             email = preferences.getString(KEY_USER_EMAIL, ""),
             role = preferences.getInt(KEY_USER_ROLE, 0),
+            roleName = preferences.getString(KEY_USER_ROLE_NAME, ""),
             password = preferences.getString(KEY_USER_PASSWORD, ""),
             gambar = preferences.getString(KEY_USER_IMAGE, "")
         )
@@ -60,6 +62,7 @@ class UserPreference(context: Context) {
             remove(KEY_USER_NAME)
             remove(KEY_USER_EMAIL)
             remove(KEY_USER_ROLE)
+            remove(KEY_USER_ROLE_NAME)
             remove(KEY_USER_PASSWORD)
             remove(KEY_USER_IMAGE)
             remove(KEY_LOGIN)

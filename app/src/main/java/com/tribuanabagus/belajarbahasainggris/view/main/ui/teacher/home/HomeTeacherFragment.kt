@@ -1,27 +1,30 @@
 package com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.home
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
+import com.smarteist.autoimageslider.SliderAnimations
 import com.tribuanabagus.belajarbahasainggris.R
 import com.tribuanabagus.belajarbahasainggris.databinding.FragmentHomeTeacherBinding
 import com.tribuanabagus.belajarbahasainggris.network.ApiConfig
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
+import com.tribuanabagus.belajarbahasainggris.utils.UtilsData
 import com.tribuanabagus.belajarbahasainggris.view.auth.AuthActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.profile.UserProfileActivity
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.adapter.HomeSliderAdapter
 
 class HomeTeacherFragment : Fragment() {
     private var _binding: FragmentHomeTeacherBinding? = null
     private val binding get() = _binding!!
-    
+    private lateinit var homeSliderAdapter: HomeSliderAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,23 +41,49 @@ class HomeTeacherFragment : Fragment() {
 
     private fun prepareView() {
         val user = UserPreference(requireContext()).getUser()
-        with(binding){
+        prepareSlider()
+        with(binding) {
             tvName.text = user.nama
+            tvRoleName.text = user.roleName
             Glide.with(requireContext())
-                .load(ApiConfig.URL_IMAGE +user.gambar)
+                .load(ApiConfig.URL_IMAGES + user.gambar)
                 .error(R.drawable.no_profile_images)
                 .into(imgUser)
-            menuQuestions.setOnClickListener{
-                findNavController().navigate(R.id.action_homeTeacherFragment_to_categoryFragment)
+        }
+
+        prepareClick()
+    }
+
+    private fun prepareSlider() {
+        homeSliderAdapter = HomeSliderAdapter()
+        homeSliderAdapter.setData(UtilsData.dataSlider)
+        binding.sliderView.apply {
+            setSliderAdapter(homeSliderAdapter)
+            setIndicatorAnimation(IndicatorAnimationType.WORM)
+            setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+            startAutoCycle()
+        }
+    }
+
+    private fun prepareClick() {
+        with(binding) {
+            menuKelolaSoal.setOnClickListener {
+                val toCategoryMenu =
+                    HomeTeacherFragmentDirections.actionHomeTeacherFragmentToCategoryMenuTeacherFragment()
+                        .apply {
+                            isFromKelolaSoal = true
+                        }
+                findNavController().navigate(toCategoryMenu)
             }
-            menuStudents.setOnClickListener{
+            menuNilaiSiswa.setOnClickListener {
                 findNavController().navigate(R.id.action_homeTeacherFragment_to_studentsFragment)
             }
-            imgUser.setOnClickListener{
-                Log.d(TAG,"gambar profil diklik")
-                startActivity(Intent(requireActivity(),UserProfileActivity::class.java))
+
+            imgUser.setOnClickListener {
+                startActivity(Intent(requireActivity(), UserProfileActivity::class.java))
             }
-            btnLogOut.setOnClickListener{showAlertDialog()}
+
+            btnExit.setOnClickListener { showAlertDialog() }
         }
     }
 
@@ -81,10 +110,11 @@ class HomeTeacherFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val user = UserPreference(requireContext()).getUser()
-        with(binding){
+        with(binding) {
             tvName.text = user.nama
+            tvRoleName.text = user.roleName
             Glide.with(requireContext())
-                .load(ApiConfig.URL_IMAGE +user.gambar)
+                .load(ApiConfig.URL_IMAGES + user.gambar)
                 .error(R.drawable.no_profile_images)
                 .into(imgUser)
         }

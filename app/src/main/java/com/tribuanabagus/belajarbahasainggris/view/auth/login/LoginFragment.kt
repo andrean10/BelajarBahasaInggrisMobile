@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,37 +15,30 @@ import com.kontakanprojects.apptkslb.local_db.Login
 import com.tribuanabagus.belajarbahasainggris.databinding.FragmentLoginBinding
 import com.tribuanabagus.belajarbahasainggris.local_db.User
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
-import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.ROLE_GURU
+import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.ROLE_ADMIN
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.ROLE_SISWA
+import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TAG
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_ERROR
 import com.tribuanabagus.belajarbahasainggris.utils.showMessage
 import com.tribuanabagus.belajarbahasainggris.view.auth.viewmodel.AuthViewModel
+import com.tribuanabagus.belajarbahasainggris.view.dialog.LoadingDialogFragment
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.StudentActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.TeacherActivity
 import www.sanju.motiontoast.MotionToast
-import com.google.android.material.textfield.TextInputEditText
-import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.ROLE_ADMIN
-import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_SUCESS
-import com.tribuanabagus.belajarbahasainggris.view.dialog.LoadingDialogFragment
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel by viewModels<AuthViewModel>()
     private val loginValid = true
-    private var roleId :Int  = 0
-
-    private lateinit var edtUsername :TextInputEditText
-    private lateinit var edtPassword :TextInputEditText
+    private var roleId: Int = 0
 
     private lateinit var loadingDialogFragment: LoadingDialogFragment
 
-    private val TAG = LoginFragment::class.java.simpleName
-
     companion object {
-        private const val SIGN_IN = 100
         private const val USERNAME_NOT_NULL = "Username tidak boleh kosong!"
         private const val PASSWORD_NOT_NULL = "Password tidak boleh kosong!"
         private const val MIN_COUNTER_LENGTH_PASS = "Minimal 5 karakter password"
@@ -69,16 +61,17 @@ class LoginFragment : Fragment(), View.OnClickListener {
         loadingDialogFragment = LoadingDialogFragment()
 
         roleId = LoginFragmentArgs.fromBundle(arguments as Bundle).role
-        binding.tvRegister.visibility = if(roleId != ROLE_SISWA) View.GONE else View.VISIBLE
+        binding.btnRegister.visibility = if (roleId != ROLE_SISWA) View.GONE else View.VISIBLE
         // Build a GoogleSignInClient with the options specified by gso.
         with(binding) {
             edtUsername.addTextChangedListener(textWatcherUsername)
             edtPassword.addTextChangedListener(textWatcherPsw)
-            tvRegister.setOnClickListener(this@LoginFragment)
+            btnRegister.setOnClickListener(this@LoginFragment)
             btnLogin.setOnClickListener(this@LoginFragment)
         }
     }
-    val textWatcherUsername = object : TextWatcher {
+
+    private val textWatcherUsername = object : TextWatcher {
         override fun beforeTextChanged(
             s: CharSequence?,
             start: Int,
@@ -98,7 +91,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-    val textWatcherPsw = object : TextWatcher {
+    private val textWatcherPsw = object : TextWatcher {
         override fun beforeTextChanged(
             s: CharSequence?,
             start: Int,
@@ -122,12 +115,13 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        with(binding){
-            when(view){
-                tvRegister -> {
-                    val toRegister = LoginFragmentDirections.actionLoginFragmentToRegisterFragment().apply {
-                        role = roleId!!
-                    }
+        with(binding) {
+            when (view) {
+                btnRegister -> {
+                    val toRegister =
+                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment().apply {
+                            role = roleId
+                        }
                     findNavController().navigate(toRegister)
                 }
                 btnLogin -> {
@@ -146,71 +140,51 @@ class LoginFragment : Fragment(), View.OnClickListener {
                         }
                     }
                 }
-                else -> {}
             }
         }
     }
 
     private fun login(params: HashMap<String, Any>) {
         val hasObserver = viewModel.login(params).hasObservers()
-        Log.d(TAG,"state observer view model = ${hasObserver}")
         viewModel.login(params).observe(viewLifecycleOwner) { result ->
             loader(false)
             if (result != null) {
-                if (result.data != null) {
-                    if (result.code == 200) {
-                        val role = result.data?.role
-                        UserPreference(requireContext()).apply {
-                            setUser(
-                                User(
-                                    id = result.data?.id,
-                                    nama = result.data?.nama,
-                                    role = role,
-                                    gambar = result.data?.gambar,
-                                    email = result.data?.email,
-                                    password = result.data?.password
+                if (result.status == 200) {
+                    val data = result.results
+                    UserPreference(requireContext()).apply {
+                        setUser(
+                            User(
+                                id = data?.id,
+                                nama = data?.nama,
+                                role = data?.role?.id ?: 0,
+                                roleName = data?.role?.nama.toString(),
+                                gambar = data?.gambar,
+                                email = data?.email,
+                                password = data?.password
+                            )
+                        )
+                        setLogin(Login(loginValid))
+                    }
+
+                    Log.d(TAG, "login: ${data?.role?.id}")
+
+                    when (data?.role?.id) {
+                        ROLE_ADMIN -> {
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    TeacherActivity::class.java
                                 )
                             )
-                            setLogin(Login(loginValid))
-                            showMessage(
-                                requireActivity(),
-                                TITLE_SUCESS,
-                                message = "berhasil login",
-                                style = MotionToast.TOAST_SUCCESS
-                            )
-                            Log.d(TAG, result?.message ?: "")
-                            when (role) {
-                                ROLE_ADMIN -> {
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            TeacherActivity::class.java
-                                        )
-                                    )
-                                }
-                                ROLE_SISWA -> {
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            StudentActivity::class.java
-                                        )
-                                    )
-                                }
-                                ROLE_GURU -> Toast.makeText(
-                                    requireActivity(),
-                                    "hak akses untuk guru tidak diizinkan masuk ke aplikasi",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
                         }
-                    } else {
-                        showMessage(
-                            requireActivity(),
-                            TITLE_ERROR,
-                            message = result.message ?: "",
-                            style = MotionToast.TOAST_ERROR
-                        )
-                        Log.d(TAG, result?.message ?: "")
+                        ROLE_SISWA -> {
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    StudentActivity::class.java
+                                )
+                            )
+                        }
                     }
                 } else {
                     showMessage(
@@ -219,7 +193,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
                         message = result.message ?: "",
                         style = MotionToast.TOAST_ERROR
                     )
-                    Log.d(TAG, result?.message ?: "")
                 }
             } else {
                 showMessage(
@@ -227,15 +200,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     TITLE_ERROR,
                     style = MotionToast.TOAST_ERROR
                 )
-                Log.d(TAG, result?.message ?: "")
             }
         }
-        if(hasObserver) viewModel.login(params).removeObservers(this)
+        if (hasObserver) viewModel.login(params).removeObservers(this)
     }
 
     override fun onPause() {
         super.onPause()
-        with(binding){
+        with(binding) {
             edtUsername.removeTextChangedListener(textWatcherUsername)
             edtPassword.removeTextChangedListener(textWatcherPsw)
         }

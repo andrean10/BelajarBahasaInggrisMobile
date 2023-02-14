@@ -6,32 +6,31 @@ import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.tribuanabagus.belajarbahasainggris.R
 import com.tribuanabagus.belajarbahasainggris.databinding.FragmentQuestionBinding
 import com.tribuanabagus.belajarbahasainggris.local_db.StudentScore
 import com.tribuanabagus.belajarbahasainggris.model.questions.Question
-import com.tribuanabagus.belajarbahasainggris.network.ApiConfig.Companion.URL_IMAGE
 import com.tribuanabagus.belajarbahasainggris.network.ApiConfig.Companion.URL_SOUNDS
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
 import com.tribuanabagus.belajarbahasainggris.utils.*
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.REQUEST_CODE_AUDIO_RECORD
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_ERROR
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_SUCESS
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.question.viewmodel.QuestionViewModel
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.StudentActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_HURUF_AZ
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_HURUF_KONSONAN
@@ -39,8 +38,6 @@ import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFr
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_MEMBACA
 import www.sanju.motiontoast.MotionToast
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
@@ -49,12 +46,13 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     private lateinit var viewModel: QuestionViewModel
 
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var speechRecognizer: SpeechRecognizer
 
-    private val listSoal: ArrayList<Question> = ArrayList()
-    private val listSoalTerjawab: HashMap<Int, StudentScore> = HashMap()
+    private val listSoal: ArrayList<Question> = arrayListOf()
+    private val listSoalTerjawab: HashMap<Int, StudentScore> = hashMapOf()
 
-    private var nextQ = 1
-    private var totalQ = 0
+//    private var nextQ = 1
+//    private var totalQ = 0
 
     private var distance = 0
     private var rightWord = 0
@@ -67,18 +65,14 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     private var answerText = ""
     private var siswa = 0
 
-    private lateinit var mainActivity :StudentActivity
+    private lateinit var mainActivity: StudentActivity
 
     private val TAG = QuestionFragment::class.simpleName
-
-    companion object {
-        fun newInstance() = QuestionFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mainActivity = activity as StudentActivity
         _binding = FragmentQuestionBinding.inflate(inflater, container, false)
         return binding.root
@@ -88,15 +82,14 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[
                 QuestionViewModel::class.java]
-
         prepareView()
     }
 
     private fun prepareView() {
         val args = QuestionFragmentArgs.fromBundle(arguments as Bundle)
         siswa = UserPreference(requireContext()).getUser().id ?: 0
-        val materyId = args.idMateriBelajar
-        materyType = args.tipeMateriBelajar
+        val materyId = 1
+        materyType = 4
 
         //set title
         var title = ""
@@ -109,7 +102,7 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
         binding.layoutQuestion.tvTitle.text = title
 
         //siapkan data soal
-        when(materyType){
+        when (materyType) {
             TIPE_HURUF_AZ -> getQuestionsByType(TIPE_HURUF_AZ)
             TIPE_HURUF_KONSONAN -> getQuestionsByType(TIPE_HURUF_KONSONAN)
             TIPE_HURUF_VOKAL, TIPE_MEMBACA -> getQuestions(materyId)
@@ -119,9 +112,9 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
     private fun getQuestionsByType(materyTypeId: Int) {
         viewModel.questionsByType(materyTypeId).observe(viewLifecycleOwner) { response ->
-            binding.progresbar.visibility = View.GONE
+            loader(false)
             if (response.data != null) {
-                if (!response.data.isEmpty()) {
+                if (response.data.isNotEmpty()) {
                     if (response.code == 200) {
                         val results = response.data
                         listSoal.addAll(results)
@@ -141,7 +134,7 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
     private fun getQuestions(materyId: Int) {
         viewModel.questions(materyId).observe(viewLifecycleOwner) { response ->
-            binding.progresbar.visibility = View.GONE
+            binding.pbLoading.visibility = View.GONE
             if (response.data != null) {
                 if (!response.data.isEmpty()) {
                     if (response.code == 200) {
@@ -162,30 +155,20 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     }
 
     private fun prepareQuestions() {
-        if(mediaPlayer?.isPlaying ?: false) releaseAudio()
+        if (mediaPlayer?.isPlaying == true) releaseAudio()
 
         prepareButtonPrevNext()
         with(binding) {
             with(layoutQuestion) {
                 btnSpeech.setOnClickListener(this@QuestionFragment)
-                btnSpeaker.setOnClickListener(this@QuestionFragment)
-                imgbNextq.setOnClickListener(this@QuestionFragment)
-                imgbPrevq.setOnClickListener(this@QuestionFragment)
-            }
-            with(layoutVocabQuestion) {
-                btnSpeech.setOnClickListener(this@QuestionFragment)
+                btnPlaySound.setOnClickListener(this@QuestionFragment)
 //                imgbNextq.setOnClickListener(this@QuestionFragment)
 //                imgbPrevq.setOnClickListener(this@QuestionFragment)
             }
+            with(layoutVocabQuestion) {
+                btnSpeech.setOnClickListener(this@QuestionFragment)
+            }
             val soal = listSoal[index]
-
-            //Prepare Image
-            val imageView = layoutQuestion.imgQuestion
-            val urlImage = URL_IMAGE + soal.gambar
-            Glide.with(requireContext())
-                .load(urlImage)
-                .error(R.drawable.img_not_found)
-                .into(imageView)
 
             //Prepare Audio
             mediaPlayer = MediaPlayer()
@@ -195,8 +178,8 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
             //prepare text
             with(binding.layoutQuestion) {
-                answerText = soal.teksJawaban.lowercase()
-                tvKalimatTest.text = "Kalimat: ${answerText}"
+//                answerText = soal.teksJawaban.lowercase()
+//                tvKalimatTest.text = "Kalimat: ${answerText}"
             }
             with(binding.layoutVocabQuestion) {
                 answerText = soal.teksJawaban.lowercase()
@@ -205,33 +188,33 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
             //prepare view answered Question
             val soalTerjawab = listSoalTerjawab[index]
-            if(soalTerjawab != null){
+            if (soalTerjawab != null) {
                 with(binding.layoutQuestion) {
-                    tvVoiceResult.text = "Yang disebut : ${soalTerjawab.spokenWords}"
-                    tvCorrectResult.text = "Benar Huruf: ${soalTerjawab.righWord}"
-                    tvWrongResult.text = "Salah Huruf: ${soalTerjawab.wrongWord}"
-                    tvDistanceResult.text = "Hasil Rumus: ${soalTerjawab.distance}"
+                    tvVoiceResult.text = "Disebut : ${soalTerjawab.spokenWords}"
+                    tvCorrectResult.text = "Benar Huruf : ${soalTerjawab.righWord}"
+                    tvWrongResult.text = "Salah Huruf : ${soalTerjawab.wrongWord}"
+                    tvDistanceResult.text = "Hasil Rumus : ${soalTerjawab.distance}"
                     tvResultScore.text = soalTerjawab.score.toString()
                     tvMessageResultScore.text = kesimpulanHasil(soalTerjawab.score)
                 }
-                with(binding.layoutVocabQuestion){
-                    tvVoiceResult.text = "Yang disebut : ${soalTerjawab.spokenWords}"
-                    tvCorrectResult.text = "Benar Huruf: ${soalTerjawab.righWord}"
-                    tvWrongResult.text = "Salah Huruf: ${soalTerjawab.wrongWord}"
-                    tvDistanceResult.text = "Hasil Rumus: ${soalTerjawab.distance}"
+                with(binding.layoutVocabQuestion) {
+                    tvVoiceResult.text = "Disebut : ${soalTerjawab.spokenWords}"
+                    tvCorrectResult.text = "Benar Huruf : ${soalTerjawab.righWord}"
+                    tvWrongResult.text = "Salah Huruf : ${soalTerjawab.wrongWord}"
+                    tvDistanceResult.text = "Hasil Rumus : ${soalTerjawab.distance}"
                     tvResultScore.text = soalTerjawab.score.toString()
                     tvMessageResultScore.text = kesimpulanHasil(soalTerjawab.score)
                 }
-            }else{
+            } else {
                 with(binding.layoutQuestion) {
-                    tvVoiceResult.text = "Yang disebut : ..."
-                    tvCorrectResult.text = "Benar Huruf: ..."
-                    tvWrongResult.text = "Salah Huruf: ..."
-                    tvDistanceResult.text = "Hasil Rumus: ..."
+                    tvVoiceResult.text = "Disebut : "
+                    tvCorrectResult.text = "Benar Huruf : "
+                    tvWrongResult.text = "Salah Huruf : "
+                    tvDistanceResult.text = "Hasil Rumus : "
                     tvResultScore.text = ""
                     tvMessageResultScore.text = "-"
                 }
-                with(binding.layoutVocabQuestion){
+                with(binding.layoutVocabQuestion) {
                     tvVoiceResult.text = "Yang disebut : ..."
                     tvCorrectResult.text = "Benar Huruf: ..."
                     tvWrongResult.text = "Salah Huruf: ..."
@@ -247,20 +230,20 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
         val sizeQuestion = listSoal.size
         if (sizeQuestion != 1) {
             with(binding.layoutQuestion) {
-                when (index) {
-                    0 -> {
-                        imgbPrevq.visibility = View.GONE
-                        imgbNextq.visibility = View.VISIBLE
-                    }
-                    sizeQuestion - 1 -> {
-                        imgbPrevq.visibility = View.VISIBLE
-                        imgbNextq.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        imgbPrevq.visibility = View.VISIBLE
-                        imgbNextq.visibility = View.VISIBLE
-                    }
-                }
+//                when (index) {
+//                    0 -> {
+//                        imgbPrevq.visibility = View.GONE
+//                        imgbNextq.visibility = View.VISIBLE
+//                    }
+//                    sizeQuestion - 1 -> {
+//                        imgbPrevq.visibility = View.VISIBLE
+//                        imgbNextq.visibility = View.VISIBLE
+//                    }
+//                    else -> {
+//                        imgbPrevq.visibility = View.VISIBLE
+//                        imgbNextq.visibility = View.VISIBLE
+//                    }
+//                }
             }
         }
     }
@@ -268,14 +251,14 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     override fun onClick(view: View?) {
         with(binding.layoutQuestion) {
             when (view?.id) {
-                R.id.imgb_nextq -> {
-                    ++index
-                        nextQuestion()
-                }
-                R.id.imgb_prevq -> {
-                    --index
-                    prevQuestion()
-                }
+//                R.id.imgb_nextq -> {
+//                    ++index
+//                    nextQuestion()
+//                }
+//                R.id.imgb_prevq -> {
+//                    --index
+//                    prevQuestion()
+//                }
                 R.id.btn_speech -> {
                     openSpeechRecord()
                 }
@@ -290,19 +273,19 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
         prepareQuestions()
     }
 
-    private fun nextQuestion(){
-        if(index != listSoal.size || !(index >= listSoal.size)){
+    private fun nextQuestion() {
+        if (index != listSoal.size || !(index >= listSoal.size)) {
             prepareQuestions()
-        }else{
+        } else {
             //tutup halaman Question (SELESAI)
             findNavController().popBackStack()
-            Log.i("tag","indeks lebih besar dr size soal")
+            Log.i("tag", "indeks lebih besar dr size soal")
         }
     }
 
     private fun openSpeechRecord() {
         checkPermissionAudioRecord()
-        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
         speechRecognizer.setRecognitionListener(this)
         // Get the Intent action
         val recIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).also {
@@ -311,7 +294,8 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
             )
             it.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE, "id" )
+                RecognizerIntent.EXTRA_LANGUAGE, "en-US"
+            )
         }
         //start listening
         speechRecognizer.startListening(recIntent)
@@ -339,7 +323,7 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
     private fun releaseAudio(emptyMediaPlayer: Boolean = true) {
         mediaPlayer?.release()
-        if(emptyMediaPlayer) mediaPlayer = null
+        if (emptyMediaPlayer) mediaPlayer = null
     }
 
     private fun prepareMediaPlayer(urlAudio: String) {
@@ -369,9 +353,9 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     private fun calculateScore(recognizedText: String) {
         //dg metode levenstein;ad di helper
         loader(true)
-        distance = getLevenshteinDistance(recognizedText,answerText)
-        val rightWrongWord = countRightWrongWord(answerText,recognizedText)
-        val similarity = findSimilarity(recognizedText,answerText)
+        distance = getLevenshteinDistance(recognizedText, answerText)
+        val rightWrongWord = countRightWrongWord(answerText, recognizedText)
+        val similarity = findSimilarity(recognizedText, answerText)
         score = (similarity * 100).toInt()
         rightWord = rightWrongWord["righWord"] ?: 0
         wrongWord = rightWrongWord["wrongWord"] ?: 0
@@ -385,7 +369,7 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
             tvResultScore.text = score.toString()
             tvMessageResultScore.text = kesimpulanHasil(score)
         }
-        with(binding.layoutVocabQuestion){
+        with(binding.layoutVocabQuestion) {
             tvVoiceResult.text = "Yang disebut : ${recognizedWord}"
             tvCorrectResult.text = "Benar Huruf: ${rightWord}"
             tvWrongResult.text = "Salah Huruf: ${wrongWord}"
@@ -423,39 +407,39 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
     private fun storeOrUpdate(score: Int) {
         // temporary
-            listSoalTerjawab[index] = StudentScore(
-                0,
-                score,
-                recognizedWord,
-                rightWord,
-                wrongWord,
-                distance
-            )
+        listSoalTerjawab[index] = StudentScore(
+            0,
+            score,
+            recognizedWord,
+            rightWord,
+            wrongWord,
+            distance
+        )
 
         //db server
-        val studentScore = hashMapOf<String,Any>()
+        val studentScore = hashMapOf<String, Any>()
         studentScore["id_siswa"] = siswa
         studentScore["id_tipe_game"] = 0
         studentScore["id_soal"] = listSoal[index].id
         studentScore["nilai"] = score
-        viewModel.storeScore(studentScore).observe(viewLifecycleOwner, { response ->
+        viewModel.storeScore(studentScore).observe(viewLifecycleOwner) { response ->
             loader(false)
             if (response.data != null) {
-                    if (response.code == 200) {
-                        showMessage(
-                            requireActivity(),
-                            TITLE_SUCESS,
-                            "Berhasil menyimpan nilai",
-                            style = MotionToast.TOAST_SUCCESS
-                        )
-                    } else {
-                        showMessage(
-                            requireActivity(),
-                            TITLE_ERROR,
-                            response.message ?: "",
-                            style = MotionToast.TOAST_ERROR
-                        )
-                    }
+                if (response.code == 200) {
+                    showMessage(
+                        requireActivity(),
+                        TITLE_SUCESS,
+                        "Berhasil menyimpan nilai",
+                        style = MotionToast.TOAST_SUCCESS
+                    )
+                } else {
+                    showMessage(
+                        requireActivity(),
+                        TITLE_ERROR,
+                        response.message ?: "",
+                        style = MotionToast.TOAST_ERROR
+                    )
+                }
             } else {
                 showMessage(
                     requireActivity(),
@@ -464,7 +448,7 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
                     style = MotionToast.TOAST_ERROR
                 )
             }
-        })
+        }
     }
 
     private fun showLayout() {
@@ -485,13 +469,13 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
 
     override fun onStart() {
         super.onStart()
-        if(mainActivity != null) mainActivity.mediaPlayer.pause()
+        if (mainActivity != null) mainActivity.mediaPlayer.pause()
     }
 
     override fun onStop() {
         super.onStop()
         releaseAudio(emptyMediaPlayer = false)
-        if(mainActivity != null) mainActivity.mediaPlayer.start()
+        if (mainActivity != null) mainActivity.mediaPlayer.start()
     }
 
     private fun dataNotFound() {
@@ -510,42 +494,42 @@ class QuestionFragment : Fragment(), View.OnClickListener, RecognitionListener {
     override fun onBufferReceived(p0: ByteArray?) {}
 
     override fun onReadyForSpeech(p0: Bundle?) {
-        with(binding.layoutQuestion){
-           cardOnReadySpeech.visibility = View.VISIBLE
-        }
-        with(binding.layoutVocabQuestion){
+        with(binding.layoutQuestion) {
             cardOnReadySpeech.visibility = View.VISIBLE
         }
-        Log.d(TAG,"onreadyspeech")
+        with(binding.layoutVocabQuestion) {
+            cardOnReadySpeech.visibility = View.VISIBLE
+        }
+        Log.d(TAG, "onreadyspeech")
     }
 
     override fun onEndOfSpeech() {
-        with(binding.layoutQuestion){
+        with(binding.layoutQuestion) {
             cardOnReadySpeech.visibility = View.INVISIBLE
         }
-        with(binding.layoutVocabQuestion){
+        with(binding.layoutVocabQuestion) {
             cardOnReadySpeech.visibility = View.INVISIBLE
         }
-        Log.d(TAG,"onendspeech")
+        Log.d(TAG, "onendspeech")
     }
 
     override fun onError(errorCode: Int) {
         val errorMessage = ErrorCodeSpeechRecognizer.getErrorCode(errorCode)
-        Toast.makeText(requireActivity(),errorMessage,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResults(results: Bundle?) {
         val result = results!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        val recognizedText = result!!.get(0)
+        val recognizedText = result!![0]
         calculateScore(recognizedText!!.lowercase(Locale.getDefault()))
 
         var message = ""
-        for(msg in message){
+        for (msg in message) {
             message += msg + "\n"
         }
 
-        Log.d(TAG,"hasil arr index 0: ${recognizedText}")
-        Log.d(TAG,"hasil seluruh arr: ${message}")
+        Log.d(TAG, "hasil arr index 0: ${recognizedText}")
+        Log.d(TAG, "hasil seluruh arr: ${message}")
     }
 
     override fun onPartialResults(p0: Bundle?) {}

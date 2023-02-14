@@ -1,0 +1,30 @@
+package com.tribuanabagus.belajarbahasainggris.model.hafalan
+
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+
+data class ResponseHafalan(
+
+    @field:SerializedName("message")
+    val message: String,
+
+    @field:SerializedName("results")
+    val results: List<ResultsHafalan>? = null,
+
+    @field:SerializedName("status")
+    val status: Int? = null
+)
+
+@Parcelize
+data class ResultsHafalan(
+
+    @field:SerializedName("subtitle")
+    val subtitle: String? = null,
+
+    @field:SerializedName("id")
+    val id: Int? = null,
+
+    @field:SerializedName("title")
+    val title: String? = null
+) : Parcelable

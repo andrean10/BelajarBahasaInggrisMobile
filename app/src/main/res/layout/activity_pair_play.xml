@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.ui.student.play.pair.PairPlayActivity">
+    tools:context=".view.main.ui.student.permainan.pair.PairPlayActivity">
 
     <TextView
         android:id="@+id/textView9"
@@ -103,7 +103,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/tv_test1" />
 
-    <com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.pair.DrawView
+    <com.tribuanabagus.belajarbahasainggris.view.main.ui.student.permainan.pair.DrawView
         android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

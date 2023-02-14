@@ -22,7 +22,7 @@
         tools:layout_editor_absoluteX="63dp" />
 
     <ImageButton
-        android:id="@+id/btn_teacher"
+        android:id="@+id/btn_admin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_8"
@@ -41,10 +41,10 @@
         android:layout_marginTop="@dimen/dimen_16"
         android:text="ADMIN"
         android:textSize="@dimen/font_size_24"
-        app:layout_constraintEnd_toEndOf="@+id/btn_teacher"
+        app:layout_constraintEnd_toEndOf="@+id/btn_admin"
         app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="@+id/btn_teacher"
-        app:layout_constraintTop_toBottomOf="@+id/btn_teacher" />
+        app:layout_constraintStart_toStartOf="@+id/btn_admin"
+        app:layout_constraintTop_toBottomOf="@+id/btn_admin" />
 
     <ImageButton
         android:id="@+id/btn_student"
@@ -56,7 +56,7 @@
         android:background="@null"
         android:src="@drawable/ic_as_students"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_teacher"
+        app:layout_constraintStart_toEndOf="@+id/btn_admin"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
@@ -69,7 +69,7 @@
         android:textSize="@dimen/font_size_24"
         app:layout_constraintEnd_toEndOf="@+id/btn_student"
         app:layout_constraintStart_toStartOf="@+id/btn_student"
-        app:layout_constraintTop_toBottomOf="@+id/btn_teacher" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_admin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"

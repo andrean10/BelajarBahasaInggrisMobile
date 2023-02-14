@@ -1,29 +1,29 @@
 package com.tribuanabagus.belajarbahasainggris.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tribuanabagus.belajarbahasainggris.R
 import com.tribuanabagus.belajarbahasainggris.databinding.ItemListSiswaBinding
-import com.tribuanabagus.belajarbahasainggris.model.student.StudentsResult
+import com.tribuanabagus.belajarbahasainggris.model.users.ResultsUsers
 import com.tribuanabagus.belajarbahasainggris.network.ApiConfig
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.SiswaViewHolder>() {
 
-    private var listSiswa = ArrayList<StudentsResult>()
+    private var listSiswa = ArrayList<ResultsUsers>()
     private var onItemClickCallBack: OnItemClickCallBack? = null
 
-    private val TAG = StudentAdapter::class.simpleName
-
-    fun setData(StudentsResult: List<StudentsResult>?) {
-        if (StudentsResult == null) return
+    fun setData(listData: List<ResultsUsers>?) {
+        if (listData == null) return
         listSiswa.clear()
-        listSiswa.addAll(StudentsResult)
+        listSiswa.addAll(listData)
         notifyDataSetChanged()
+    }
 
-        Log.d(TAG, "setData: $listSiswa")
+    fun setFilteredList(filteredList: ArrayList<ResultsUsers>) {
+        listSiswa = filteredList
+        notifyDataSetChanged()
     }
 
     fun setOnItemClickCallBack(onItemClickCallBack: OnItemClickCallBack) {
@@ -42,24 +42,16 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.SiswaViewHolder>() {
 
     override fun getItemCount() = listSiswa.size
 
-    fun setFilteredList(filteredList: ArrayList<StudentsResult>) {
-        listSiswa = filteredList
-        notifyDataSetChanged()
-
-        Log.d(TAG, "filtered list: $filteredList")
-    }
-
     inner class SiswaViewHolder(private val binding: ItemListSiswaBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(studentsResult: StudentsResult) {
+        fun bind(studentsResult: ResultsUsers) {
             with(binding) {
-                tvName.text = studentsResult.nama
-
                 Glide.with(itemView.context)
-                    .load(ApiConfig.URL_IMAGE+studentsResult.gambar)
+                    .load(ApiConfig.URL_IMAGES + studentsResult.gambar)
                     .error(R.drawable.no_profile_images)
                     .into(imgUser)
+                tvName.text = studentsResult.nama
 
                 itemView.setOnClickListener { onItemClickCallBack?.onItemClicked(studentsResult) }
             }
@@ -67,6 +59,6 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.SiswaViewHolder>() {
     }
 
     interface OnItemClickCallBack {
-        fun onItemClicked(StudentsResult: StudentsResult)
+        fun onItemClicked(data: ResultsUsers)
     }
 }

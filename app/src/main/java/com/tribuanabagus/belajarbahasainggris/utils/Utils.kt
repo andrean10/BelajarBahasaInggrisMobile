@@ -293,3 +293,8 @@ val String.capitalizeEachWords
             }
         }
     }
+
+fun String.removePunctuation(): String {
+    val re = Regex("[^A-Za-z0-9 ]")
+    return re.replace(this, "")
+}

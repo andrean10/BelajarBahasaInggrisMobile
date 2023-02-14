@@ -1,4 +1,4 @@
-package com.tribuanabagus.belajarbahasainggris.model.user
+package com.tribuanabagus.belajarbahasainggris.user
 
 import com.google.gson.annotations.SerializedName
 

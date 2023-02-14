@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tribuanabagus.belajarbahasainggris.databinding.ItemListPairqBinding
 import com.tribuanabagus.belajarbahasainggris.model.questions.PairWordQ
-import com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.pairQ.RvItemClickListener
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.pairQ.RvItemClickListener
 
 class PairQAdapter : RecyclerView.Adapter<PairQAdapter.PairQViewHolder>() {
     private var viewPool = RecyclerView.RecycledViewPool()

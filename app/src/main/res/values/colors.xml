@@ -10,6 +10,9 @@
     <color name="colorRight">#33C2CF</color>
     <color name="colorSelected">#0962A0</color>
 
+    <color name="text_subtitle_color">#8ED0FF</color>
+    <color name="divider_color">#639DC6</color>
+
     <color name="seed">#DA9999</color>
     <color name="md_theme_light_primary">#9C4145</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>

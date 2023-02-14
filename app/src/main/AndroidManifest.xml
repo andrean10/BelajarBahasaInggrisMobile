@@ -9,16 +9,17 @@
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /><!--    WAJIG ADA, klu tak di hp vivo api 30 tidak bs klik app penyedia file audionya-->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- WAJIG ADA, klu tak di hp vivo api 30 tidak bs klik app penyedia file audionya -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGE" />
 
     <queries>
         <intent>
-            <action android:name="android.intent.action.PICK"/>
-            <data android:mimeType="*/*"/>
+            <action android:name="android.intent.action.PICK" />
+
+            <data android:mimeType="*/*" />
         </intent>
         <intent>
-            <action android:name="android.speech.RecognitionService"/>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 
@@ -33,62 +34,69 @@
         android:theme="@style/Theme.SpeechRecognition"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <!--        <activity-->
+        <!--            android:name=".MainActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+        <!-- android:networkSecurityConfig="@xml/network_security_config" -->
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.profile.ChangePasswordActivity"
+            android:name=".view.main.ui.profile.ChangePasswordActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.pairQ.uploadpairq.UploadPairQActivity"
+            android:name=".view.main.ui.teacher.kelolasoal_old.pairQ.uploadpairq.UploadPairQActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.pairQ.uploadpair.UploadPairActivity"
+            android:name=".view.main.ui.teacher.kelolasoal_old.pairQ.uploadpair.UploadPairActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.pair.PairPlayActivity"
+            android:name=".view.main.ui.student.permainan.pair.PairPlayActivity"
             android:exported="false"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.profile.UserProfileActivity"
+            android:name=".view.main.ui.profile.UserProfileActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.guessQ.upload.UploadGuessQActivity"
+            android:name=".view.main.ui.teacher.kelolasoal_old.guessQ.upload.UploadGuessQActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.lessonQ.upload.UploadLessonQActivity"
+            android:name=".view.main.ui.teacher.kelolasoal_old.lessonQ.upload.UploadLessonQActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:label="@string/title_activity_upload_lesson_qactivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.SpeechRecognition">
-        </activity>
+            android:theme="@style/Theme.SpeechRecognition" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.TeacherActivity"
+            android:name=".view.main.ui.teacher.TeacherActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.auth.AuthActivity"
+            android:name=".view.auth.AuthActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:label="@string/title_activity_auth"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SpeechRecognition" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.StudentActivity"
-            android:configChanges="orientation"
+            android:name=".view.main.ui.student.StudentActivity"
             android:exported="false"
             android:label="@string/title_activity_main2"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SpeechRecognition" />
         <activity
-            android:name="com.tribuanabagus.belajarbahasainggris.view.splash.SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait"

@@ -7,33 +7,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.tribuanabagus.belajarbahasainggris.R
 import com.tribuanabagus.belajarbahasainggris.databinding.FragmentHomeStudentBinding
-import com.tribuanabagus.belajarbahasainggris.network.ApiConfig.Companion.URL_IMAGE
+import com.tribuanabagus.belajarbahasainggris.network.ApiConfig.Companion.URL_IMAGES
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsData.dataSlider
 import com.tribuanabagus.belajarbahasainggris.view.auth.AuthActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.profile.UserProfileActivity
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.StudentActivity
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.adapter.HomeSliderAdapter
-import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.home.viewmodel.HomeStudentViewModel
 
 class HomeStudentFragment : Fragment() {
 
     private var _binding: FragmentHomeStudentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<HomeStudentViewModel>()
     private lateinit var homeSliderAdapter: HomeSliderAdapter
+    private lateinit var userPreference: UserPreference
+    private lateinit var mainActivity: StudentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        mainActivity = activity as StudentActivity
         _binding = FragmentHomeStudentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,12 +45,15 @@ class HomeStudentFragment : Fragment() {
     }
 
     private fun prepareView() {
-        val user = UserPreference(requireContext()).getUser()
+        userPreference = UserPreference(requireContext())
+        val user = userPreference.getUser()
+
         prepareSlider()
         with(binding) {
             tvName.text = user.nama
+            tvRoleName.text = user.roleName
             Glide.with(requireContext())
-                .load(URL_IMAGE + user.gambar)
+                .load(URL_IMAGES + user.gambar)
                 .error(R.drawable.no_profile_images)
                 .into(imgUser)
         }
@@ -76,19 +80,19 @@ class HomeStudentFragment : Fragment() {
             menuHafalan.setOnClickListener {
                 findNavController().navigate(R.id.action_navigation_home_students_to_hafalanFragment)
             }
-//                cardMenu1 -> {
-//                    findNavController().navigate(R.id.action_navigation_home_to_studyFragment)
-//                }
-//                cardMenu2 -> {
-//                    findNavController().navigate(R.id.action_navigation_home_to_playFragment)
-//                }
-//                cardMenu3 -> {
-//                    val toKategoriNilaiSiswa = HomeStudentFragmentDirections.actionNavigationHomeToCategoryScoreFragment()
-//                    findNavController().navigate(toKategoriNilaiSiswa)
-//                }
+            menuPercakapan.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_students_to_percakapanFragment)
+            }
+            menuPermainan.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_to_playFragment)
+            }
             menuProfile.setOnClickListener {
                 startActivity(Intent(requireActivity(), UserProfileActivity::class.java))
             }
+            menuNilai.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_students_to_categoryScoreStudentFragment)
+            }
+            btnExit.setOnClickListener { showAlertDialog() }
         }
     }
 
@@ -103,13 +107,38 @@ class HomeStudentFragment : Fragment() {
                     removeUser()
                 }
                 startActivity(Intent(requireActivity(), AuthActivity::class.java))
+                requireActivity().finish()
             }
-            .setNegativeButton("Tidak") { dialog, i ->
+            .setNegativeButton("Tidak") { dialog, _ ->
                 dialog.cancel()
             }
 
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val user = userPreference.getUser()
+
+        with(binding) {
+            tvName.text = user.nama
+            tvRoleName.text = user.roleName
+            Glide.with(requireContext())
+                .load(URL_IMAGES + user.gambar)
+                .error(R.drawable.no_profile_images)
+                .into(imgUser)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainActivity.mediaPlayer.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivity.mediaPlayer.pause()
     }
 
     override fun onDestroyView() {

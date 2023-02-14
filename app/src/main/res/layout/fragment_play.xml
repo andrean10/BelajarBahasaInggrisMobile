@@ -1,63 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEEEE"
-    android:fillViewport="true"
-    tools:context=".view.main.ui.student.play.PlayFragment">
+    tools:context=".view.main.ui.student.permainan.PlayFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_back2"
-            android:padding="@dimen/dimen_8"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintEnd_toStartOf="@+id/gd_home_v"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Menu Permainan"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_new"
+            app:title="Percakapan" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/bg_shape2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2">
+            android:padding="@dimen/dimen_16">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_guess_word"
-                style="@style/Widget.Material3.CardView.Elevated"
+                android:id="@+id/card_guess_the_picture"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_shape3"
-                app:cardBackgroundColor="@color/white"
-                app:cardElevation="@dimen/dimen_16"
-                android:layout_marginLeft="@dimen/dimen_16"
-                android:layout_marginRight="@dimen/dimen_16"
-                android:layout_marginTop="@dimen/dimen_24">
+                app:cardElevation="@dimen/dimen_8">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -69,31 +50,27 @@
                         android:layout_width="51dp"
                         android:layout_height="51dp"
                         android:layout_marginEnd="@dimen/dimen_8"
-                        android:contentDescription="Foto Profile"
-                        android:src="@drawable/ic_guess_word" />
+                        android:contentDescription="Icon Games"
+                        android:src="@drawable/placeholder_games" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/img_user"
                         android:fontFamily="@font/poppins_bold"
-                        android:layout_centerVertical="true"
-                        android:text="Tebak Kata"
+                        android:text="Guess The Picture"
                         android:textSize="@dimen/font_size_16" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_find_pair_words"
-                style="@style/Widget.Material3.CardView.Elevated"
+                android:id="@+id/card_find_a_partner"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_shape3"
-                app:cardBackgroundColor="@color/white"
-                app:cardElevation="@dimen/dimen_16"
-                android:layout_marginLeft="@dimen/dimen_16"
-                android:layout_marginRight="@dimen/dimen_16"
-                android:layout_marginTop="@dimen/dimen_16">
+                android:layout_marginTop="@dimen/dimen_16"
+                app:cardElevation="@dimen/dimen_8">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -105,8 +82,8 @@
                         android:layout_width="51dp"
                         android:layout_height="51dp"
                         android:layout_marginEnd="@dimen/dimen_8"
-                        android:contentDescription="Foto Profile"
-                        android:src="@drawable/ic_find_match" />
+                        android:contentDescription="Icon Games"
+                        android:src="@drawable/placeholder_games" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -114,25 +91,139 @@
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/img_find_match"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Temukan pasangan"
+                        android:text="Find A Partner"
                         android:textSize="@dimen/font_size_16" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="50dp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gd_home_v"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2" />
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/btn_back"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="@null"-->
+    <!--            android:src="@drawable/ic_back2"-->
+    <!--            android:padding="@dimen/dimen_8"-->
+    <!--            app:layout_constraintBottom_toTopOf="@+id/guideline2"-->
+    <!--            app:layout_constraintEnd_toStartOf="@+id/gd_home_v"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/textView2"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:fontFamily="@font/poppins_bold"-->
+    <!--            android:text="Menu Permainan"-->
+    <!--            android:textSize="18sp"-->
+    <!--            app:layout_constraintBottom_toTopOf="@+id/linearLayout"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/linearLayout"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:background="@drawable/bg_shape2"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="@+id/guideline2">-->
+
+    <!--            <com.google.android.material.card.MaterialCardView-->
+    <!--                android:id="@+id/card_guess_the_picture"-->
+    <!--                style="@style/Widget.Material3.CardView.Elevated"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:background="@drawable/bg_shape3"-->
+    <!--                app:cardBackgroundColor="@color/white"-->
+    <!--                app:cardElevation="@dimen/dimen_16"-->
+    <!--                android:layout_marginLeft="@dimen/dimen_16"-->
+    <!--                android:layout_marginRight="@dimen/dimen_16"-->
+    <!--                android:layout_marginTop="@dimen/dimen_24">-->
+
+    <!--                <RelativeLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:padding="@dimen/dimen_16">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:id="@+id/img_user"-->
+    <!--                        android:layout_width="51dp"-->
+    <!--                        android:layout_height="51dp"-->
+    <!--                        android:layout_marginEnd="@dimen/dimen_8"-->
+    <!--                        android:contentDescription="Foto Profile"-->
+    <!--                        android:src="@drawable/placeholder_games" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_centerVertical="true"-->
+    <!--                        android:layout_toEndOf="@id/img_user"-->
+    <!--                        android:fontFamily="@font/poppins_bold"-->
+    <!--                        android:text="Guess The Picture"-->
+    <!--                        android:textSize="@dimen/font_size_16" />-->
+    <!--                </RelativeLayout>-->
+    <!--            </com.google.android.material.card.MaterialCardView>-->
+
+    <!--            <com.google.android.material.card.MaterialCardView-->
+    <!--                android:id="@+id/card_find_a_partner"-->
+    <!--                style="@style/Widget.Material3.CardView.Elevated"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:background="@drawable/bg_shape3"-->
+    <!--                app:cardBackgroundColor="@color/white"-->
+    <!--                app:cardElevation="@dimen/dimen_16"-->
+    <!--                android:layout_marginLeft="@dimen/dimen_16"-->
+    <!--                android:layout_marginRight="@dimen/dimen_16"-->
+    <!--                android:layout_marginTop="@dimen/dimen_16">-->
+
+    <!--                <RelativeLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:padding="@dimen/dimen_16">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:id="@+id/img_find_match"-->
+    <!--                        android:layout_width="51dp"-->
+    <!--                        android:layout_height="51dp"-->
+    <!--                        android:layout_marginEnd="@dimen/dimen_8"-->
+    <!--                        android:contentDescription="Foto Profile"-->
+    <!--                        android:src="@drawable/placeholder_games" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_centerVertical="true"-->
+    <!--                        android:layout_toEndOf="@id/img_find_match"-->
+    <!--                        android:fontFamily="@font/poppins_bold"-->
+    <!--                        android:text="Find A Partner"-->
+    <!--                        android:textSize="@dimen/font_size_16" />-->
+    <!--                </RelativeLayout>-->
+    <!--            </com.google.android.material.card.MaterialCardView>-->
+    <!--        </LinearLayout>-->
+
+    <!--        <androidx.constraintlayout.widget.Guideline-->
+    <!--            android:id="@+id/guideline2"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:layout_constraintGuide_begin="50dp" />-->
+
+    <!--        <androidx.constraintlayout.widget.Guideline-->
+    <!--            android:id="@+id/gd_home_v"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical"-->
+    <!--            app:layout_constraintGuide_percent="0.2" />-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

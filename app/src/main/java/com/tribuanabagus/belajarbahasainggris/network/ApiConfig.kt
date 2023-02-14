@@ -6,56 +6,61 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 class ApiConfig {
     companion object {
-        //  url
-//        const val URL = "http://192.168.1.8:8000" // local  WIFI HOME
+        const val URL = "http://192.168.202.33:3000" // local  WIFI HOME
 //        const val URL = "http://192.168.100.215:8000" // local WIFI KANTOR
-//        const val URL_IMAGE = "$URL/images/"
-//        const val URL_SOUNDS = "$URL/sounds/"
-        const val URL = "https://tonenyahudi.com" //RELEASE
+
+        //        const val URL = "https://belajar-bahasa-inggris.sahamsmart.com" //RELEASE
+//        const val URL = "https://test-belajar-bahasa-inggris.sahamsmart.com" //RELEASE
         const val URL_IMAGE = "$URL/app-api/public/images/"
         const val URL_SOUNDS = "$URL/app-api/public/sounds/"
-//        const val URL = "http://10.0.2.2:3000" // local emulator
+        const val URL_FILES = "$URL/files"
+        const val URL_IMAGES = "$URL/images"
 
         private const val ENDPOINT = "$URL/api/"
 
-
         //ALLOWED RETROFIT TO ACCESS LARAVEL API
         //laravel protect unauthorized access and prevents from unknown client request. and for this case, it was Retrofit
-        var allowedClient = Interceptor { chain: Interceptor.Chain ->
+        private var allowedClient = Interceptor { chain: Interceptor.Chain ->
             val response: Response
             val newRequest = chain.request().newBuilder()
-                .addHeader("User-Agent", System.getProperty("http.agent")) //IMPORTANT
+                .addHeader("User-Agent", System.getProperty("http.agent") ?: "") //IMPORTANT
                 .addHeader(
                     "Accept",
                     "application/json"
-                ) //                    .addHeader("Content-Length",)
+                )
                 .method(chain.request().method, chain.request().body)
                 .build()
             newRequest.headers["Cookie"]
             response = chain.proceed(newRequest)
-            response.headers["Set-Cookie"]
+            response.headers["Set-Cwhookie"]
             response
         }
 
-        private fun client(): OkHttpClient {
-            val loggingInterceptor = HttpLoggingInterceptor()
-                .setLevel(
-                    HttpLoggingInterceptor.Level.BODY
-                )
-            val builder = OkHttpClient.Builder().also {
-                it.readTimeout(200, TimeUnit.SECONDS)
-                it.writeTimeout(600, TimeUnit.SECONDS)
-                it.connectTimeout(600, TimeUnit.SECONDS)
-                it.addInterceptor(loggingInterceptor)
-                it.addInterceptor(allowedClient)
-            }
+//        private fun client(): OkHttpClient {
+//            val loggingInterceptor = HttpLoggingInterceptor()
+//                .setLevel(
+//                    HttpLoggingInterceptor.Level.BODY
+//                )
+//            val builder = OkHttpClient.Builder().also {
+//                it.readTimeout(200, TimeUnit.SECONDS)
+//                it.writeTimeout(600, TimeUnit.SECONDS)
+//                it.connectTimeout(600, TimeUnit.SECONDS)
+//                it.addInterceptor(loggingInterceptor)
+//                it.addInterceptor(allowedClient)
+//            }
+//
+//            return builder.build()
+//        }
 
-            val client: OkHttpClient = builder.build()
-            return client
+        private fun client(): OkHttpClient {
+            val logging = HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
+            return OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build()
         }
 
         fun getApiService(): ApiService {

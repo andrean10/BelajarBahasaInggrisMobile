@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tribuanabagus.belajarbahasainggris.databinding.ItemTutorialVideoBinding
-import com.tribuanabagus.belajarbahasainggris.local_db.VideoPembelajaran
+import com.tribuanabagus.belajarbahasainggris.model.video_pembelajaran.ResultsVideoPembelajaran
 
 class ItemTutorialVideoAdapter :
     RecyclerView.Adapter<ItemTutorialVideoAdapter.ItemTutorialVideoViewHolder>() {
 
     private var onItemClickCallBack: OnItemClickCallBack? = null
-    private val data = arrayListOf<VideoPembelajaran>()
+    private val data = arrayListOf<ResultsVideoPembelajaran>()
 
 
-    fun setData(listVA: List<VideoPembelajaran>?) {
-        if (listVA == null) return
+    fun setData(listData: List<ResultsVideoPembelajaran>?) {
+        if (listData == null) return
         data.clear()
-        data.addAll(listVA)
+        data.addAll(listData)
         notifyDataSetChanged()
     }
 
@@ -34,7 +34,7 @@ class ItemTutorialVideoAdapter :
 
     inner class ItemTutorialVideoViewHolder(private val binding: ItemTutorialVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: VideoPembelajaran) {
+        fun bind(data: ResultsVideoPembelajaran) {
             with(binding) {
                 tvTitleVideo.text = data.title
                 tvDescVideo.text = data.description
@@ -49,6 +49,6 @@ class ItemTutorialVideoAdapter :
     }
 
     interface OnItemClickCallBack {
-        fun onItemClicked(data: VideoPembelajaran)
+        fun onItemClicked(data: ResultsVideoPembelajaran)
     }
 }

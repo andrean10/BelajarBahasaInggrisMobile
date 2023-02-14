@@ -1,10 +1,10 @@
 package com.tribuanabagus.belajarbahasainggris.view.main.ui.student
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tribuanabagus.belajarbahasainggris.R
@@ -15,7 +15,7 @@ import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TIPE_BERMAIN_TEBAK_KATA
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TIPE_BERMAIN_TEMUKAN_PASANGAN
 import com.tribuanabagus.belajarbahasainggris.utils.showMessage
-import com.tribuanabagus.belajarbahasainggris.view.main.ui.score.ScoreViewModel
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.score.viewmodel.ScoreViewModelOld
 import www.sanju.motiontoast.MotionToast
 
 class ResultFragment : Fragment(), View.OnClickListener {
@@ -26,7 +26,7 @@ class ResultFragment : Fragment(), View.OnClickListener {
     private var score: Int = 0
     private var gameType: Int = 0
 
-    private val viewModelScore by viewModels<ScoreViewModel>()
+    private val viewModelScore by viewModels<ScoreViewModelOld>()
 
     companion object{
         const val QUESTION_TYPE = 1

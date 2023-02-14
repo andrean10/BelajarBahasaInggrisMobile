@@ -35,11 +35,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="Foto Profile"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     tools:src="@drawable/dummy_img_user" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <ImageButton
+            android:id="@+id/btn_exit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="@dimen/dimen_8"
+            android:src="@drawable/ic_exit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -52,7 +62,7 @@
             tools:text="Yuven" />
 
         <TextView
-            android:id="@+id/tv_role"
+            android:id="@+id/tv_role_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
@@ -284,7 +294,6 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@+id/ll_menu_hafalan"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/ll_menu_hafalan"
                     app:layout_constraintTop_toTopOf="@+id/ll_menu_permainan">
 
@@ -303,7 +312,7 @@
                             android:padding="@dimen/dimen_12">
 
                             <ImageView
-                                android:layout_width="30dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:src="@drawable/ic_percakapan" />
                         </LinearLayout>

@@ -3,9 +3,9 @@ package com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher
 import android.content.res.AssetFileDescriptor
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.tribuanabagus.belajarbahasainggris.R
 
 class TeacherActivity : AppCompatActivity() {
@@ -22,21 +22,17 @@ class TeacherActivity : AppCompatActivity() {
 
         //play music as long as lifecycle this activity not destroyed
         mediaPlayer = MediaPlayer()
-        audioRaw = applicationContext.resources.openRawResourceFd(R.raw.speech_intro)
+        audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app_new)
         prepareMediaPlayer()
 
-
-        mediaPlayer.setOnCompletionListener (object: MediaPlayer.OnCompletionListener{
-            override fun onCompletion(_mediaPlayer: MediaPlayer) {
-                isFinished = true
-                _mediaPlayer.release()
-                mediaPlayer = MediaPlayer()
-                audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app)
-                mediaPlayer.isLooping = true
-                prepareMediaPlayer()
-            }
-        })
-        Log.d(TAG,"oncreate")
+        mediaPlayer.setOnCompletionListener { _mediaPlayer ->
+            isFinished = true
+            _mediaPlayer.release()
+            mediaPlayer = MediaPlayer()
+            audioRaw = applicationContext.resources.openRawResourceFd(R.raw.music_app_new)
+            mediaPlayer.isLooping = true
+            prepareMediaPlayer()
+        }
     }
 
     private fun prepareMediaPlayer() {
@@ -45,37 +41,37 @@ class TeacherActivity : AppCompatActivity() {
             .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
             .build()
         try {
-            mediaPlayer?.setAudioAttributes(attribute)
-            mediaPlayer?.setDataSource(audioRaw.fileDescriptor,audioRaw.startOffset,audioRaw.length)
-            mediaPlayer?.prepare()
+            mediaPlayer.setAudioAttributes(attribute)
+            mediaPlayer.setDataSource(
+                audioRaw.fileDescriptor,
+                audioRaw.startOffset,
+                audioRaw.length
+            )
+            mediaPlayer.prepare()
         } catch (e: Exception) {
             Log.e(TAG, "prepareMediaPlayer: ${e.message}")
         }
 
-        mediaPlayer?.setOnPreparedListener {
+        mediaPlayer.setOnPreparedListener {
             isReady = true
-            mediaPlayer?.start()
+            mediaPlayer.start()
         }
-        mediaPlayer?.setOnErrorListener { _, _, _ -> false }
+        mediaPlayer.setOnErrorListener { _, _, _ -> false }
     }
 
 
     override fun onStart() {
         super.onStart()
         mediaPlayer.start()
-        Log.d(TAG,"onstart")
     }
 
     override fun onStop() {
         super.onStop()
         mediaPlayer.pause()
-        Log.d(TAG,"onstop")
     }
 
     override fun onDestroy() {
         mediaPlayer.release()
         super.onDestroy()
-
-        Log.d(TAG,"ondestroy")
     }
 }

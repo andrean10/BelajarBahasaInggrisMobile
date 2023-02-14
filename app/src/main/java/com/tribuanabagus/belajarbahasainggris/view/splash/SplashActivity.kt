@@ -40,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
                     finish()
                 }
             } else {
-                startActivity(Intent(this@SplashActivity, StudentActivity::class.java))
+                startActivity(Intent(this@SplashActivity, AuthActivity::class.java))
                 finish()
             }
         }

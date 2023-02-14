@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/teacher_navigation"
-    app:startDestination="@id/homeTeacherFragment">
-    <fragment
-        android:id="@+id/homeTeacherFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.home.HomeTeacherFragment"
-        android:label="fragment_home_teacher"
-        tools:layout="@layout/fragment_home_teacher">
-        <action
-            android:id="@+id/action_homeTeacherFragment_to_studentsFragment"
-            app:destination="@id/studentsFragment" />
-        <action
-            android:id="@+id/action_homeTeacherFragment_to_categoryFragment"
-            app:destination="@id/categoryFragment" />
-    </fragment>
+ <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/teacher_navigation"
+     app:startDestination="@id/homeTeacherFragment">
+     <fragment
+         android:id="@+id/homeTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.home.HomeTeacherFragment"
+         android:label="fragment_home_teacher"
+         tools:layout="@layout/fragment_home_teacher">
+         <action
+             android:id="@+id/action_homeTeacherFragment_to_studentsFragment"
+             app:destination="@id/studentsFragment" />
+         <action
+             android:id="@+id/action_homeTeacherFragment_to_categoryFragment"
+             app:destination="@id/categoryFragment" />
+         <action
+             android:id="@+id/action_homeTeacherFragment_to_categoryMenuTeacherFragment"
+             app:destination="@id/categoryMenuTeacherFragment" />
+     </fragment>
     <fragment
         android:id="@+id/studentsFragment"
         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.students.StudentsFragment"
         android:label="fragment_students"
         tools:layout="@layout/fragment_students" >
         <action
-            android:id="@+id/action_studentsFragment_to_categoryScoreFragment2"
-            app:destination="@id/categoryScoreFragment2" />
+            android:id="@+id/action_studentsFragment_to_categoryMenuTeacherFragment"
+            app:destination="@id/categoryMenuTeacherFragment" />
     </fragment>
     <fragment
         android:id="@+id/scoreFragment2"
@@ -43,17 +46,17 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
-    <fragment
-        android:id="@+id/categoryFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.category.CategoryFragment"
-        android:label="fragment_category"
-        tools:layout="@layout/fragment_category" >
-        <argument
-            android:name="id_siswa"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_categoryFragment_to_materyFragment"
-            app:destination="@id/materyFragment" />
+     <fragment
+         android:id="@+id/categoryFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.category.CategoryFragment"
+         android:label="fragment_category"
+         tools:layout="@layout/fragment_category">
+         <argument
+             android:name="id_siswa"
+             app:argType="string" />
+         <action
+             android:id="@+id/action_categoryFragment_to_materyFragment"
+             app:destination="@id/materyFragment" />
         <action
             android:id="@+id/action_categoryFragment_to_guessQFragment"
             app:destination="@id/guessQFragment" />
@@ -61,25 +64,25 @@
             android:id="@+id/action_categoryFragment_to_pairQFragment"
             app:destination="@id/pairQFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/categoryScoreFragment2"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.kategory.CategoryScoreFragment"
-        android:label="fragment_category_score"
-        tools:layout="@layout/fragment_category_score" >
-        <action
-            android:id="@+id/action_categoryScoreFragment2_to_scoreFragment2"
-            app:destination="@id/scoreFragment2" />
-        <argument
-            android:name="id_siswa"
-            app:argType="integer"
-            android:defaultValue="0" />
-        <action
-            android:id="@+id/action_categoryScoreFragment2_to_resultFragment2"
-            app:destination="@id/resultFragment2" />
+     <fragment
+         android:id="@+id/kategoriScoreFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.kategori.KategoriScoreFragment"
+         android:label="fragment_category_score"
+         tools:layout="@layout/fragment_kategori_score">
+         <action
+             android:id="@+id/action_categoryScoreFragment2_to_scoreFragment2"
+             app:destination="@id/scoreFragment2" />
+         <argument
+             android:name="id_siswa"
+             app:argType="integer"
+             android:defaultValue="0" />
+         <action
+             android:id="@+id/action_categoryScoreFragment2_to_resultFragment2"
+             app:destination="@id/resultFragment2" />
     </fragment>
     <fragment
         android:id="@+id/uploadLessonQActivity"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.lessonQ.upload.UploadLessonQActivity"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.lessonQ.upload.UploadLessonQActivity"
         android:label="Fragment_upload_lesson_q"
         tools:layout="@layout/activity_upload_lesson_q" >
         <argument
@@ -97,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/materyFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.lessonQ.MateryFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.lessonQ.MateryFragment"
         android:label="fragment_matery"
         tools:layout="@layout/fragment_matery" >
         <action
@@ -118,7 +121,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadMateryFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.lessonQ.uploadmateri.UploadMateryFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.lessonQ.uploadmateri.UploadMateryFragment"
         android:label="fragment_upload_matery"
         tools:layout="@layout/fragment_upload_matery" >
         <argument
@@ -136,7 +139,7 @@
     </fragment>
     <fragment
         android:id="@+id/vowelSentenceFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.lessonQ.VowelSentenceFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.lessonQ.VowelSentenceFragment"
         android:label="fragment_vowel_sentence"
         tools:layout="@layout/fragment_vowel_sentence" >
         <argument
@@ -146,7 +149,7 @@
     </fragment>
     <fragment
         android:id="@+id/guessQFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.guessQ.GuessQFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.guessQ.GuessQFragment"
         android:label="fragment_guess_q"
         tools:layout="@layout/fragment_guess_q" >
         <action
@@ -155,7 +158,7 @@
     </fragment>
     <fragment
         android:id="@+id/uploadGuessQFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.guessQ.upload.UploadGuessQActivity"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.guessQ.upload.UploadGuessQActivity"
         android:label="fragment_upload_guess_q"
         tools:layout="@layout/activity_upload_guess_q" >
         <argument
@@ -170,12 +173,12 @@
         tools:layout="@layout/activity_user_profile" />
     <fragment
         android:id="@+id/pairQFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.pairQ.PairQFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.pairQ.PairQFragment"
         android:label="fragment_pair_q"
         tools:layout="@layout/fragment_pair_q" />
     <activity
         android:id="@+id/uploadPairQActivity"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.pairQ.uploadpair.UploadPairActivity"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal_old.pairQ.uploadpair.UploadPairActivity"
         android:label="activity_upload_pair_qactivity"
         tools:layout="@layout/activity_upload_pair" />
     <activity
@@ -204,5 +207,151 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+     <fragment
+         android:id="@+id/nilaiFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.nilai.NilaiStudentFragment"
+         android:label="fragment_nilai_student"
+         tools:layout="@layout/fragment_nilai_student" />
+     <fragment
+         android:id="@+id/categoryMenuTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.category.CategoryMenuTeacherFragment"
+         android:label="fragment_category_menu_teacher"
+         tools:layout="@layout/fragment_category_menu_teacher">
+         <argument
+             android:name="idSiswa"
+             android:defaultValue="0"
+             app:argType="integer" />
+         <action
+             android:id="@+id/action_categoryMenuTeacherFragment_to_hafalanTeacherFragment"
+             app:destination="@id/hafalanTeacherFragment" />
+         <action
+             android:id="@+id/action_categoryMenuTeacherFragment_to_percakapanTeacherFragment"
+             app:destination="@id/percakapanTeacherFragment" />
+         <argument
+             android:name="isFromKelolaSoal"
+             android:defaultValue="false"
+             app:argType="boolean" />
+     </fragment>
+     <fragment
+         android:id="@+id/hafalanTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.hafalan.HafalanTeacherFragment"
+         android:label="fragment_hafalan_teacher"
+         tools:layout="@layout/fragment_hafalan_teacher">
+         <argument
+             android:name="idSiswa"
+             app:argType="integer" />
+         <action
+             android:id="@+id/action_hafalanTeacherFragment_to_nilaiTeacherFragment"
+             app:destination="@id/nilaiTeacherFragment" />
+         <argument
+             android:name="isFromKelolaSoal"
+             android:defaultValue="false"
+             app:argType="boolean" />
+         <action
+             android:id="@+id/action_hafalanTeacherFragment_to_manageHafalanFragment"
+             app:destination="@id/manageHafalanFragment" />
+         <action
+             android:id="@+id/action_hafalanTeacherFragment_to_soalTeacherFragment"
+             app:destination="@id/soalTeacherFragment" />
+     </fragment>
+     <fragment
+         android:id="@+id/percakapanTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.percakapan.PercakapanTeacherFragment"
+         android:label="fragment_percakapan_teacher"
+         tools:layout="@layout/fragment_percakapan_teacher">
+         <argument
+             android:name="idSiswa"
+             app:argType="integer" />
+         <action
+             android:id="@+id/action_percakapanTeacherFragment_to_nilaiTeacherFragment"
+             app:destination="@id/nilaiTeacherFragment" />
+         <argument
+             android:name="isFromKelolaSoal"
+             android:defaultValue="false"
+             app:argType="boolean" />
+         <action
+             android:id="@+id/action_percakapanTeacherFragment_to_managePercakapanFragment"
+             app:destination="@id/managePercakapanFragment" />
+         <action
+             android:id="@+id/action_percakapanTeacherFragment_to_soalTeacherFragment"
+             app:destination="@id/soalTeacherFragment" />
+     </fragment>
+     <fragment
+         android:id="@+id/nilaiTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.nilai.NilaiTeacherFragment"
+         android:label="fragment_nilai_teacher"
+         tools:layout="@layout/fragment_nilai_teacher">
+         <argument
+             android:name="idSiswa"
+             app:argType="integer" />
+         <argument
+             android:name="dataHafalan"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.hafalan.ResultsHafalan"
+             app:nullable="true" />
+         <argument
+             android:name="dataPercakapan"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.percakapan.ResultsPercakapan"
+             app:nullable="true" />
+     </fragment>
+     <fragment
+         android:id="@+id/manageHafalanFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.hafalan.manage.ManageHafalanFragment"
+         android:label="fragment_manage_hafalan"
+         tools:layout="@layout/fragment_manage_hafalan">
+         <argument
+             android:name="data"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.hafalan.ResultsHafalan"
+             app:nullable="true" />
+     </fragment>
+     <fragment
+         android:id="@+id/managePercakapanFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.percakapan.manage.ManagePercakapanFragment"
+         android:label="fragment_manage_percakapan"
+         tools:layout="@layout/fragment_manage_percakapan">
+         <argument
+             android:name="data"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.percakapan.ResultsPercakapan"
+             app:nullable="true" />
+     </fragment>
+     <fragment
+         android:id="@+id/soalTeacherFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.SoalTeacherFragment"
+         android:label="fragment_soal_teacher"
+         tools:layout="@layout/fragment_soal_teacher">
+         <argument
+             android:name="dataHafalan"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.hafalan.ResultsHafalan"
+             app:nullable="true" />
+         <argument
+             android:name="dataPercakapan"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.percakapan.ResultsPercakapan"
+             app:nullable="true" />
+         <action
+             android:id="@+id/action_soalTeacherFragment_to_manageSoalFragment"
+             app:destination="@id/manageSoalFragment" />
+     </fragment>
+     <fragment
+         android:id="@+id/manageSoalFragment"
+         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.teacher.kelolasoal.manage.ManageSoalFragment"
+         android:label="fragment_manage_soal"
+         tools:layout="@layout/fragment_manage_soal">
+         <argument
+             android:name="dataSoal"
+             android:defaultValue="@null"
+             app:argType="com.tribuanabagus.belajarbahasainggris.model.soal.ResultsSoal"
+             app:nullable="true" />
+         <argument
+             android:name="idSoal"
+             app:argType="integer" />
+         <argument
+             android:name="tipe_soal"
+             app:argType="string" />
+     </fragment>
 
-</navigation>
+ </navigation>

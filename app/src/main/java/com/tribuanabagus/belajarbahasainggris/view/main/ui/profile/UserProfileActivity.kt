@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -13,17 +12,17 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.tribuanabagus.belajarbahasainggris.R
 import com.tribuanabagus.belajarbahasainggris.databinding.ActivityUserProfileBinding
 import com.tribuanabagus.belajarbahasainggris.local_db.User
-import com.tribuanabagus.belajarbahasainggris.model.user.Data
+import com.tribuanabagus.belajarbahasainggris.model.users.ResultsUserManage
 import com.tribuanabagus.belajarbahasainggris.network.ApiConfig
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode
-import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_WARNING
 import com.tribuanabagus.belajarbahasainggris.utils.createPartFromString
 import com.tribuanabagus.belajarbahasainggris.utils.showMessage
 import com.tribuanabagus.belajarbahasainggris.view.auth.viewmodel.AuthViewModel
@@ -31,28 +30,20 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import www.sanju.motiontoast.MotionToast
 import java.io.File
 
-class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
+class UserProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserProfileBinding
     private val viewModel by viewModels<AuthViewModel>()
 
     private lateinit var user: User
-
-    private var isImageExist = false
-    private var imageUri: Uri? = null
     private var imagePath: String? = null
 
 //    private lateinit var audioRaw: AssetFileDescriptor
 //    lateinit var mediaPlayer: MediaPlayer
-    private var isReady: Boolean = false
-
-    private val TAG = UserProfileActivity::class.simpleName
-
+//    private var isReady: Boolean = false
 //    private lateinit var BackgroundSound: BackgroundSound
-
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 111
@@ -60,9 +51,6 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
         private const val MUST_PICK_IMAGE = "Gambar soal harus dipilih, tidak boleh kosong!"
         private const val FULLNAME_NOT_NULL = "Nama tidak boleh kosong!"
         private const val USERNAME_NOT_NULL = "Username tidak boleh kosong!"
-        private const val PASSWORD_NOT_NULL = "Password tidak boleh kosong!"
-        private const val MIN_COUNTER_LENGTH_PASS = "Minimal 5 karakter password"
-        const val TYPE = "type"
     }
 
 
@@ -80,7 +68,7 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     private fun prepareView() {
-        with(binding){
+        with(binding) {
             prepareViewWithData(UserPreference(this@UserProfileActivity))
 
             edtFullname.addTextChangedListener(object : TextWatcher {
@@ -131,12 +119,13 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        with(binding){
-            when(view){
+        with(binding) {
+            when (view) {
                 pickImage -> selectImage()
                 btnBack -> finish()
                 btnEditPsw -> {
-                    val intent = Intent (this@UserProfileActivity,ChangePasswordActivity::class.java)
+                    val intent =
+                        Intent(this@UserProfileActivity, ChangePasswordActivity::class.java)
                     startActivity(intent)
                 }
                 btnUpdateProfile -> {
@@ -144,33 +133,29 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
                     val fullName = edtFullname.text.toString().trim()
                     val email = edtUsername.text.toString().trim()
 
-                    when{
-                        !isImageExist -> {
-                            showMessage(
-                                activity = this@UserProfileActivity,
-                                title = TITLE_WARNING,
-                                message = MUST_PICK_IMAGE,
-                                style = MotionToast.TOAST_WARNING
-                            )
-                            return@with
-                            loader(false)
-                        }
+                    when {
+//                        !isImageExist -> {
+//                            showMessage(
+//                                activity = this@UserProfileActivity,
+//                                title = TITLE_WARNING,
+//                                message = MUST_PICK_IMAGE,
+//                                style = MotionToast.TOAST_WARNING
+//                            )
+//                            return@with
+//                            loader(false)
+//                        }
                         fullName.isEmpty() -> {
                             tiFullname.error = FULLNAME_NOT_NULL
                         }
                         email.isEmpty() -> tiUsername.error = USERNAME_NOT_NULL
                         else -> {
-                            var params = HashMap<String, RequestBody>()
-                            params.put("id", createPartFromString(user.id.toString()))
-                            params.put("nama", createPartFromString(fullName))
-                            params.put("email", createPartFromString(email))
-                            params.put("role", createPartFromString(user.role.toString()))
+                            val params = HashMap<String, RequestBody>()
+                            params["id"] = createPartFromString(user.id.toString())
+                            params["nama"] = createPartFromString(fullName)
+                            params["email"] = createPartFromString(email)
+                            params["role"] = createPartFromString(user.role.toString())
 
-                            when{
-                                isImageExist && imagePath == null -> updateProfile(reqFileImageEmpty(),params)
-                                else -> updateProfile(reqFileImage(),params)
-                            }
-
+                            updateProfile(user.id ?: 0, params, reqFileImage())
                         }
                     }
                 }
@@ -178,25 +163,31 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    private fun updateProfile(bodyImage: MultipartBody.Part,params: HashMap<String,RequestBody>) {
-        viewModel.updateProfile(bodyImage,params).observe(this) { response ->
+    private fun updateProfile(
+        id: Int,
+        params: HashMap<String, RequestBody>,
+        image: MultipartBody.Part? = null
+    ) {
+        viewModel.updateProfile(id, params, image).observe(this) { response ->
             loader(false)
-            if (response.data != null) {
-                if (response.code == 200) {
+            if (response != null) {
+                if (response.status == 200) {
                     showMessage(
                         this@UserProfileActivity,
                         UtilsCode.TITLE_SUCESS,
-                        response.message ?: "",
+                        response.message,
                         style = MotionToast.TOAST_SUCCESS
                     )
-                    val result = response.data
-                    saveDataToPreference(result)
-                    finish()
+                    val result = response.results
+                    if (result != null) {
+                        saveDataToPreference(result)
+                        finish()
+                    }
                 } else {
                     showMessage(
                         this@UserProfileActivity,
                         UtilsCode.TITLE_ERROR,
-                        response.message ?: "",
+                        response.message,
                         style = MotionToast.TOAST_ERROR
                     )
                 }
@@ -204,36 +195,36 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
                 showMessage(
                     this@UserProfileActivity,
                     UtilsCode.TITLE_ERROR,
-                    response.message ?: "",
+                    getString(R.string.failed_description),
                     style = MotionToast.TOAST_ERROR
                 )
             }
         }
     }
 
-    private fun saveDataToPreference(data: Data) {
+    private fun saveDataToPreference(data: ResultsUserManage) {
         UserPreference(this@UserProfileActivity).apply {
             setUser(
                 User(
-                    id = data?.id,
-                    nama = data?.nama,
-                    role = data.role,
-                    gambar = data?.gambar,
-                    email = data?.email,
-                    password = data?.password
+                    id = data.id,
+                    nama = data.nama,
+                    role = data.roleId,
+                    email = data.email,
+                    password = data.password,
+                    gambar = data.gambar,
                 )
             )
         }
     }
 
-    fun prepareViewWithData(preference: UserPreference){
+    private fun prepareViewWithData(preference: UserPreference) {
         user = preference.getUser()
-        with(binding){
+        with(binding) {
             Glide.with(this@UserProfileActivity)
-                .load(ApiConfig.URL_IMAGE + user.gambar)
+                .load(ApiConfig.URL_IMAGES + user.gambar)
                 .error(R.drawable.no_profile_images)
                 .into(imgProfile)
-            isImageExist = true
+//            isImageExist = true
             edtFullname.setText(user.nama)
             edtUsername.setText(user.email)
         }
@@ -250,20 +241,23 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
         resultLauncherImage.launch(Intent.createChooser(intent, "Pilih 1 Gambar"))
     }
 
-    private fun reqFileImage(): MultipartBody.Part {
-        val fileImage = File(imagePath!!)
-        val reqFileImage =
-            fileImage.asRequestBody("image/jpeg/jpg/png".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData(
-            "gambar", fileImage.name, reqFileImage
-        )
+    private fun reqFileImage(): MultipartBody.Part? {
+        if (imagePath != null) {
+            val fileImage = File(imagePath!!)
+            val reqFileImage =
+                fileImage.asRequestBody("image/jpeg/jpg/png".toMediaTypeOrNull())
+            return MultipartBody.Part.createFormData(
+                "foto_profile", fileImage.name, reqFileImage
+            )
+        }
+        return null
     }
 
-    private fun reqFileImageEmpty(): MultipartBody.Part {
-        val reqFileImage = ""
-            .toRequestBody("image/jpeg/jpg/png".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("gambar", "", reqFileImage)
-    }
+//    private fun reqFileImageEmpty(): MultipartBody.Part {
+//        val reqFileImage = ""
+//            .toRequestBody("image/jpeg/jpg/png".toMediaTypeOrNull())
+//        return MultipartBody.Part.createFormData("gambar", "", reqFileImage)
+//    }
 
     private fun getPathImage(contentUri: Uri): String? {
         val filePath: String?
@@ -281,21 +275,20 @@ class UserProfileActivity : AppCompatActivity(),View.OnClickListener {
 
     private var resultLauncherImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if(result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 if (data != null) {
                     val selectedImage = data.data
                     if (selectedImage != null) {
                         with(binding) {
-                            imageUri = data?.data
-                            imagePath = getPathImage(imageUri!!)
+//                            imageUri = data.data
+                            imagePath = getPathImage(selectedImage)
 
                             //circle imgview hanya bs load dg glide/picasso (?)
                             Glide.with(this@UserProfileActivity)
-                                .load(imageUri)
+                                .load(imagePath)
                                 .error(R.drawable.no_profile_images)
                                 .into(imgProfile)
-                            isImageExist = true
                         }
                     }
                 }

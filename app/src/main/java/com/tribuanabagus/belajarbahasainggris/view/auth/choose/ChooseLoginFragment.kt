@@ -15,8 +15,7 @@ class ChooseLoginFragment : Fragment(), View.OnClickListener {
 
     companion object {
         const val ROLE_ADMIN = 1
-        const val ROLE_TEACHER = 2
-        const val ROLE_STUDENT = 3
+        const val ROLE_STUDENT = 2
     }
 
     override fun onCreateView(
@@ -31,17 +30,17 @@ class ChooseLoginFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            btnTeacher.setOnClickListener(this@ChooseLoginFragment)
+            btnAdmin.setOnClickListener(this@ChooseLoginFragment)
             btnStudent.setOnClickListener(this@ChooseLoginFragment)
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_teacher -> {
+            R.id.btn_admin -> {
                 val toLogin =
                     ChooseLoginFragmentDirections.actionChooseLoginFragmentToLoginFragment(
-                        ROLE_TEACHER
+                        ROLE_ADMIN
                     )
                 findNavController().navigate(toLogin)
             }

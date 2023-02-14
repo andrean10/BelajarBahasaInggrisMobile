@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/drawable/ic_delete_new.xml" value="0.1605" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/drawable/ic_password.xml" value="0.205" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/activity_change_password.xml" value="0.25" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/activity_main.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/activity_splash.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/activity_teacher.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/activity_user_profile.xml" value="0.25" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_category_menu_teacher.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_category_score_student.xml" value="0.33" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_category_score_teacher.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_daftar_isi_hafalan.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_hafalan.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_hafalan_teacher.xml" value="0.25" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_home_student.xml" value="0.33" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_home_teacher.xml" value="0.33" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_login.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_manage_hafalan.xml" value="0.25" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_manage_percakapan.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_manage_soal.xml" value="0.22" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_nilai_student.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_nilai_teacher.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_pair.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_percakapan.xml" value="0.2548656163113994" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_percakapan_teacher.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/fragment_soal_teacher.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/layout_hafalan.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/layout/layout_menu.xml" value="0.19635416666666666" />
+        <entry key="..\:/Users/andre/AndroidStudioProjects/Kontrakan Project/BelajarBahasaInggris/app/src/main/res/menu/menu_main.xml" value="0.33" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

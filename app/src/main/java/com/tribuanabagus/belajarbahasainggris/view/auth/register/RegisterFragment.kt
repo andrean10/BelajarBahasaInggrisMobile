@@ -12,11 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.tribuanabagus.belajarbahasainggris.databinding.FragmentRegisterBinding
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_ERROR
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TITLE_SUCESS
-import com.tribuanabagus.belajarbahasainggris.utils.createPartFromString
 import com.tribuanabagus.belajarbahasainggris.utils.showMessage
 import com.tribuanabagus.belajarbahasainggris.view.auth.viewmodel.AuthViewModel
 import com.tribuanabagus.belajarbahasainggris.view.dialog.LoadingDialogFragment
-import okhttp3.RequestBody
 import www.sanju.motiontoast.MotionToast
 
 class RegisterFragment : Fragment() {
@@ -127,16 +125,22 @@ class RegisterFragment : Fragment() {
                     email.isEmpty() -> tiUsername.error = USERNAME_NOT_NULL
                     password.isEmpty() -> tiPassword.error = PASSWORD_NOT_NULL
                     else -> {
-//                        loader(true)
-                        val params = HashMap<String, RequestBody>()
-                        params.put("id", createPartFromString((0).toString()))
-                        params.put("nama", createPartFromString(fullName.toString()))
-                        params.put("email", createPartFromString(email.toString()))
-                        params.put("password", createPartFromString(password.toString()))
-                        params.put(
-                            "role",
-                            createPartFromString((roleId).toString())
-                        ) //Defaultnya buat ke siswa biar ndak error (??is it good practice)
+                        loader(true)
+                        val params = hashMapOf(
+                            "nama" to fullName,
+                            "email" to email,
+                            "password" to password
+                        )
+
+//                        val params = HashMap<String, RequestBody>()
+//                        params.put("id", createPartFromString((0).toString()))
+//                        params.put("nama", createPartFromString(fullName.toString()))
+//                        params.put("email", createPartFromString(email.toString()))
+//                        params.put("password", createPartFromString(password.toString()))
+//                        params.put(
+//                            "role",
+//                            createPartFromString((roleId).toString())
+//                        ) //Defaultnya buat ke siswa biar ndak error (??is it good practice)
                         register(params)
                     }
                 }
@@ -147,11 +151,11 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun register(params: HashMap<String, RequestBody>) {
-        viewModel.register(params = params).observe(requireActivity()) { response ->
+    private fun register(params: HashMap<String, String>) {
+        viewModel.register(params).observe(requireActivity()) { response ->
             loader(false)
-            if (response.data != null) {
-                if (response.code == 200) {
+            if (response != null) {
+                if (response.status == 201) {
                     showMessage(
                         requireActivity(),
                         TITLE_SUCESS,

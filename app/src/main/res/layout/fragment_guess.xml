@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#006BB6"
     android:fillViewport="true"
-    tools:context=".view.main.ui.student.play.guess.GuessFragment">
+    tools:context=".view.main.ui.student.permainan.guess.GuessFragment">
     <!--    android:background="#006BB6"-->
 
 

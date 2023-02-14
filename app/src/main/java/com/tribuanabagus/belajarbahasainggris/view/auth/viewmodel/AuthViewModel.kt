@@ -5,64 +5,110 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.tribuanabagus.belajarbahasainggris.model.user.UserResponse
+import com.tribuanabagus.belajarbahasainggris.model.auth.ResponseLogin
+import com.tribuanabagus.belajarbahasainggris.model.auth.ResponseRegister
+import com.tribuanabagus.belajarbahasainggris.model.users.ResponseUserManage
 import com.tribuanabagus.belajarbahasainggris.network.ApiConfig
+import com.tribuanabagus.belajarbahasainggris.user.UserResponse
+import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode.TAG
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AuthViewModel: ViewModel() {
-    private var _auth = MutableLiveData<UserResponse>()
-    private val TAG = AuthViewModel::class.java.simpleName
+class AuthViewModel : ViewModel() {
+    private var _auth: MutableLiveData<ResponseLogin?>? = null
+    private var _register: MutableLiveData<ResponseRegister?>? = null
+    private var _authOld = MutableLiveData<UserResponse>()
+
+    private var _user: MutableLiveData<ResponseUserManage?>? = null
+
     private val RESPONSE_CLASS = UserResponse::class.java
+    private val RESPONSE_LOGIN = ResponseLogin::class.java
 
-    fun login(params: HashMap<String,Any>): LiveData<UserResponse>{
-        _auth = getLogin(params)
-        return _auth
+    fun login(params: HashMap<String, Any>): LiveData<ResponseLogin?> {
+        _auth = MutableLiveData()
+        getLogin(params)
+        return _auth as MutableLiveData<ResponseLogin?>
     }
 
-    fun updateProfile(image: MultipartBody.Part, params: HashMap<String, RequestBody>): LiveData<UserResponse>{
-        storeUser(image,params)
-        return _auth
+    fun register(params: HashMap<String, String>): LiveData<ResponseRegister?> {
+        _register = MutableLiveData()
+        storeUser(params)
+        return _register as MutableLiveData<ResponseRegister?>
     }
 
-    fun register(params: HashMap<String, RequestBody>): LiveData<UserResponse>{
-        storeUser(params = params)
-        return _auth
+    fun updateProfile(
+        id: Int,
+        params: HashMap<String, RequestBody>,
+        image: MultipartBody.Part?,
+    ): LiveData<ResponseUserManage?> {
+        _user = MutableLiveData()
+        updateUser(id, params, image)
+        return _user as MutableLiveData<ResponseUserManage?>
     }
 
-    fun userDetail (userId: Int): LiveData<UserResponse>{
-        _auth = getUserDetail(userId)
-        return _auth
+    fun updatePassword(id: Int, newPassword: String): LiveData<ResponseUserManage?> {
+        _user = MutableLiveData()
+        updateUserPassword(id, newPassword)
+        return _user as MutableLiveData<ResponseUserManage?>
     }
 
-    fun updatePassword(params: HashMap<String, Any>): LiveData<UserResponse>{
-        updateUserPassword(params)
-        return _auth
-    }
+//    fun userDetail(userId: Int): LiveData<UserResponse> {
+//        _authOld = getUserDetail(userId)
+//        return _authOld
+//    }
 
-    private fun updateUserPassword(params: HashMap<String, Any>) {
-        val client = ApiConfig.getApiService().updateUserPassword(params)
-        val gson = Gson()
-        client.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+    private fun getLogin(params: HashMap<String, Any>) {
+        val client = ApiConfig.getApiService().login(params)
+        client.enqueue(object : Callback<ResponseLogin> {
+            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    _auth.postValue(result!!)
-                    Log.d(TAG,result.toString())
+                    result.also {
+                        _auth?.postValue(it)
+                    }
                 } else {
-                    val errResult = gson.fromJson(response.errorBody()?.string(),RESPONSE_CLASS)
-                    val msg = response.message()
-                    Log.e(TAG, "onFailure: $errResult")
-                    Log.e(TAG, "onFailure: $msg")
-                    _auth.postValue(errResult)
+                    val error =
+                        Gson().fromJson(
+                            response.errorBody()?.string(),
+                            RESPONSE_LOGIN
+                        )
+                    _auth?.postValue(error)
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
                 Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun updateUserPassword(id: Int, newPassword: String) {
+        val client = ApiConfig.getApiService().updatePassword(id, newPassword)
+        client.enqueue(object : Callback<ResponseUserManage> {
+            override fun onResponse(
+                call: Call<ResponseUserManage>,
+                response: Response<ResponseUserManage>
+            ) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    result.also {
+                        _user!!.postValue(it)
+                    }
+                } else {
+                    val error =
+                        Gson().fromJson(
+                            response.errorBody()?.string(),
+                            ResponseUserManage::class.java
+                        )
+                    _user!!.postValue(error)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseUserManage>, t: Throwable) {
+                _user!!.postValue(null)
             }
         })
     }
@@ -74,13 +120,13 @@ class AuthViewModel: ViewModel() {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    _auth.postValue(result!!)
+                    _authOld.postValue(result!!)
                 } else {
-                    val errResult = gson.fromJson(response.errorBody()?.string(),RESPONSE_CLASS)
+                    val errResult = gson.fromJson(response.errorBody()?.string(), RESPONSE_CLASS)
                     val msg = response.message()
                     Log.e(TAG, "onFailure: $errResult")
                     Log.e(TAG, "onFailure: $msg")
-                    _auth.postValue(errResult)
+                    _authOld.postValue(errResult)
                 }
             }
 
@@ -88,55 +134,65 @@ class AuthViewModel: ViewModel() {
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
-        return _auth
+        return _authOld
     }
 
-    private fun storeUser(image: MultipartBody.Part? = null, params: HashMap<String, RequestBody>) {
-        val client = ApiConfig.getApiService().storeUser(image,params)
-        val gson = Gson()
-        client.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+    private fun storeUser(params: HashMap<String, String>) {
+        val client = ApiConfig.getApiService().register(params)
+        client.enqueue(object : Callback<ResponseRegister> {
+            override fun onResponse(
+                call: Call<ResponseRegister>,
+                response: Response<ResponseRegister>
+            ) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    _auth.postValue(result!!)
+                    _register!!.postValue(result)
                 } else {
-                    val errResult = gson.fromJson(response.errorBody()?.string(),RESPONSE_CLASS)
-                    val msg = response.message()
-                    Log.e(TAG, "onFailure: $errResult")
-                    Log.e(TAG, "onFailure: $msg")
-                    _auth.postValue(errResult)
+                    val error =
+                        Gson().fromJson(
+                            response.errorBody()?.string(),
+                            ResponseRegister::class.java
+                        )
+                    _register!!.postValue(error)
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseRegister>, t: Throwable) {
                 Log.e(TAG, "onFailure: ${t.message}")
+                _register!!.postValue(null)
             }
         })
     }
 
-    private fun getLogin(params: HashMap<String, Any>): MutableLiveData<UserResponse> {
-        val client = ApiConfig.getApiService().login(params)
-        val gson = Gson()
-        client.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+    private fun updateUser(
+        id: Int,
+        params: HashMap<String, RequestBody>,
+        image: MultipartBody.Part? = null
+    ) {
+        val client = ApiConfig.getApiService().updateUser(id, params, image)
+        client.enqueue(object : Callback<ResponseUserManage> {
+            override fun onResponse(
+                call: Call<ResponseUserManage>,
+                response: Response<ResponseUserManage>
+            ) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    _auth.postValue(result!!)
+                    result.also {
+                        _user!!.postValue(it)
+                    }
                 } else {
-                    val errResult = gson.fromJson(response.errorBody()?.string(),RESPONSE_CLASS)
-                    val msg = response.message()
-                    Log.e(TAG, "onFailure: $errResult")
-                    Log.e(TAG, "onFailure: $msg")
-                    _auth.postValue(errResult)
+                    val error =
+                        Gson().fromJson(
+                            response.errorBody()?.string(),
+                            ResponseUserManage::class.java
+                        )
+                    _user!!.postValue(error)
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure: ${t.message}")
+            override fun onFailure(call: Call<ResponseUserManage>, t: Throwable) {
+                _user!!.postValue(null)
             }
         })
-        return _auth;
     }
-
-
 }

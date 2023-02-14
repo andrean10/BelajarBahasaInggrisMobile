@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".view.main.ui.teacher.kelolasoal.lessonQ.upload.UploadLessonQActivity">
+    tools:context=".view.main.ui.teacher.kelolasoal_old.lessonQ.upload.UploadLessonQActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

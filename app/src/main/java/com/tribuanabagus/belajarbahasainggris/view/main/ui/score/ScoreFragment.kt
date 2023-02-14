@@ -1,12 +1,12 @@
 package com.tribuanabagus.belajarbahasainggris.view.main.ui.score
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +17,7 @@ import com.tribuanabagus.belajarbahasainggris.model.student.StudentScore
 import com.tribuanabagus.belajarbahasainggris.session.UserPreference
 import com.tribuanabagus.belajarbahasainggris.utils.UtilsCode
 import com.tribuanabagus.belajarbahasainggris.utils.showMessage
+import com.tribuanabagus.belajarbahasainggris.view.main.ui.score.viewmodel.ScoreViewModelOld
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_HURUF_AZ
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_HURUF_KONSONAN
 import com.tribuanabagus.belajarbahasainggris.view.main.ui.student.study.StudyFragment.Companion.TIPE_HURUF_VOKAL
@@ -26,39 +27,40 @@ import www.sanju.motiontoast.MotionToast
 
 class ScoreFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private val viewModel by viewModels<ScoreViewModel>()
+    private val viewModel by viewModels<ScoreViewModelOld>()
     private val viewModel2 by viewModels<MaterialStudyViewModel>()
     private var _binding: FragmentScoreBinding? = null
     private val binding get() = _binding!!
     private lateinit var materyStudyScoreAdapter: MaterialStudyScoreAdapter
-    private lateinit var args: ScoreFragmentArgs
+    private lateinit var args: com.tribuanabagus.belajarbahasainggris.view.main.ui.score.ScoreFragmentArgs
     private var idStudent = 0
 
     private var listMateryStudy = ArrayList<MateryStudy>()
     private val listScore = ArrayList<StudentScore>()
     private var isMatery = false
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentScoreBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args = ScoreFragmentArgs.fromBundle(arguments as Bundle)
-        idStudent = if(args.idSiswa == 0){
+        args =
+            com.tribuanabagus.belajarbahasainggris.view.main.ui.score.ScoreFragmentArgs.fromBundle(
+                arguments as Bundle
+            )
+        idStudent = if (args.idSiswa == 0) {
             UserPreference(requireContext()).getUser().id ?: 0
-        }else{
+        } else {
             args.idSiswa
         }
 
         val tipeMateri = args.tipeMateriScore
-        prepareView(tipeMateri,idStudent)
+        prepareView(tipeMateri, idStudent)
     }
 
     private fun prepareView(tipeMateri: Int, idStudent: Int) {

@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".view.main.ui.teacher.kelolasoal.lessonQ.MateryFragment">
+    tools:context=".view.main.ui.teacher.kelolasoal_old.lessonQ.MateryFragment">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="313dp"
-        android:background="@drawable/bg_top_blue"
         app:layout_constraintBottom_toTopOf="@id/guideline_bg" />
 
     <ImageButton
@@ -54,7 +53,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="242dp"
-        android:background="@drawable/bg_bottom_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_bg2" />

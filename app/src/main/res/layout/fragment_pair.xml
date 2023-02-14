@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.ui.student.play.pair.PairFragment">
+    tools:context=".view.main.ui.student.permainan.pair.PairFragment">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_test_speech"/>
+        android:background="@drawable/bg_test_speech" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
             app:layout_constraintStart_toEndOf="@+id/img_right"
             app:layout_constraintTop_toTopOf="@+id/img_right" />
 
-        <com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.pair.DrawView
+        <com.tribuanabagus.belajarbahasainggris.view.main.ui.student.permainan.pair.DrawView
             android:id="@+id/drawView"
             android:layout_width="0dp"
             android:layout_height="0dp"

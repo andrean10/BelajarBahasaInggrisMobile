@@ -5,7 +5,7 @@ data class User(
     var nama: String? = null,
     var email: String? = null,
     var role: Int? = null,
+    var roleName: String? = null,
     var password: String? = null,
     var gambar: String? = null
-//    var numberPhone: String?,
 )

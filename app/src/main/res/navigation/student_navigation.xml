@@ -17,14 +17,17 @@
             android:id="@+id/action_navigation_home_to_playFragment"
             app:destination="@id/playFragment" />
         <action
-            android:id="@+id/action_navigation_home_to_categoryScoreFragment"
-            app:destination="@id/categoryScoreFragment" />
-        <action
             android:id="@+id/action_navigation_home_students_to_tutorialVideoFragment"
             app:destination="@id/tutorialVideoFragment" />
         <action
             android:id="@+id/action_navigation_home_students_to_hafalanFragment"
             app:destination="@id/hafalanFragment" />
+        <action
+            android:id="@+id/action_navigation_home_students_to_percakapanFragment"
+            app:destination="@id/percakapanFragment" />
+        <action
+            android:id="@+id/action_navigation_home_students_to_categoryScoreStudentFragment"
+            app:destination="@id/categoryScoreStudentFragment" />
     </fragment>
 
     <fragment
@@ -45,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/playFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.PlayFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.permainan.PlayFragment"
         android:label="fragment_play"
         tools:layout="@layout/fragment_play" >
         <action
@@ -87,7 +90,7 @@
     </fragment>
     <fragment
         android:id="@+id/guessFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.guess.GuessFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.permainan.guess.GuessFragment"
         android:label="fragment_guess"
         tools:layout="@layout/fragment_guess" >
         <action
@@ -97,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/pairFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.play.pair.PairFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.permainan.pair.PairFragment"
         android:label="fragment_pair"
         tools:layout="@layout/fragment_pair" >
         <action
@@ -124,10 +127,10 @@
             android:defaultValue="0" />
     </fragment>
     <fragment
-        android:id="@+id/categoryScoreFragment"
-        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.kategory.CategoryScoreFragment"
+        android:id="@+id/kategoriScoreFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.score.kategori.KategoriScoreFragment"
         android:label="fragment_category_score"
-        tools:layout="@layout/fragment_category_score" >
+        tools:layout="@layout/fragment_kategori_score">
         <action
             android:id="@+id/action_categoryScoreFragment_to_scoreFragment"
             app:destination="@id/ScoreFragment" />
@@ -174,14 +177,87 @@
         android:id="@+id/playVideoFragment"
         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.tutorial.play_video.PlayVideoFragment"
         android:label="fragment_play_video"
-        tools:layout="@layout/fragment_play_video" >
+        tools:layout="@layout/fragment_play_video">
         <argument
             android:name="data"
-            app:argType="com.tribuanabagus.belajarbahasainggris.local_db.VideoPembelajaran" />
+            app:argType="com.tribuanabagus.belajarbahasainggris.model.video_pembelajaran.ResultsVideoPembelajaran" />
     </fragment>
     <fragment
         android:id="@+id/hafalanFragment"
         android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.hapalan.HafalanFragment"
         android:label="fragment_hafalan"
-        tools:layout="@layout/fragment_hafalan" />
+        tools:layout="@layout/fragment_hafalan">
+        <action
+            android:id="@+id/action_hafalanFragment_to_daftarIsiHafalanFragment"
+            app:destination="@id/daftarIsiHafalanFragment" />
+        <action
+            android:id="@+id/action_hafalanFragment_to_nilaiFragment"
+            app:destination="@id/nilaiFragment" />
+        <argument
+            android:name="isFromNilai"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/percakapanFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.percakapan.PercakapanFragment"
+        android:label="fragment_percakapan"
+        tools:layout="@layout/fragment_percakapan">
+        <action
+            android:id="@+id/action_percakapanFragment_to_nilaiFragment"
+            app:destination="@id/nilaiFragment" />
+        <argument
+            android:name="isFromNilai"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_percakapanFragment_to_daftarIsiPercakapanFragment"
+            app:destination="@id/daftarIsiPercakapanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/daftarIsiHafalanFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.hapalan.detail.DaftarIsiHafalanFragment"
+        android:label="fragment_daftar_isi_hafalan"
+        tools:layout="@layout/fragment_daftar_isi_hafalan">
+        <argument
+            android:name="data"
+            app:argType="com.tribuanabagus.belajarbahasainggris.model.hafalan.ResultsHafalan" />
+    </fragment>
+    <fragment
+        android:id="@+id/daftarIsiPercakapanFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.percakapan.detail.DaftarIsiPercakapanFragment"
+        android:label="fragment_daftar_isi_percakapan"
+        tools:layout="@layout/fragment_daftar_isi_percakapan">
+        <argument
+            android:name="data"
+            app:argType="com.tribuanabagus.belajarbahasainggris.model.percakapan.ResultsPercakapan" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryScoreStudentFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.nilai.kategori.CategoryScoreStudentFragment"
+        android:label="fragment_category_score"
+        tools:layout="@layout/fragment_category_score_student">
+        <action
+            android:id="@+id/action_categoryScoreStudentFragment_to_percakapanFragment"
+            app:destination="@id/percakapanFragment" />
+        <action
+            android:id="@+id/action_categoryScoreStudentFragment_to_hafalanFragment"
+            app:destination="@id/hafalanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nilaiFragment"
+        android:name="com.tribuanabagus.belajarbahasainggris.view.main.ui.student.nilai.NilaiStudentFragment"
+        android:label="fragment_nilai"
+        tools:layout="@layout/fragment_nilai_student">
+        <argument
+            android:name="dataHafalan"
+            android:defaultValue="@null"
+            app:argType="com.tribuanabagus.belajarbahasainggris.model.hafalan.ResultsHafalan"
+            app:nullable="true" />
+        <argument
+            android:name="dataPercakapan"
+            android:defaultValue="@null"
+            app:argType="com.tribuanabagus.belajarbahasainggris.model.percakapan.ResultsPercakapan"
+            app:nullable="true" />
+    </fragment>
 </navigation>

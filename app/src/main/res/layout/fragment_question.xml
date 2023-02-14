@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".view.main.ui.question.QuestionFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_new"
+            app:title="Latihan Berbicara" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include
         android:id="@+id/layout_question"
-        layout="@layout/item_question" />
+        layout="@layout/item_jawab_soal"
+        android:visibility="gone" />
+
     <include
         android:id="@+id/layout_empty"
-        android:visibility="gone"
-        layout="@layout/empty_layout"/>
+        layout="@layout/empty_layout"
+        android:visibility="gone" />
+
     <include
         android:id="@+id/layout_vocab_question"
-        android:visibility="gone"
-        layout="@layout/item_vocab_question"/>
-    <ProgressBar
-        android:id="@+id/progresbar"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        layout="@layout/item_vocab_question"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/pb_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

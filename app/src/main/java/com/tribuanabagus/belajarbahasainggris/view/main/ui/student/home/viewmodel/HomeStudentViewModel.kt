@@ -6,6 +6,4 @@ class HomeStudentViewModel : ViewModel() {
 
     private val TAG = HomeStudentViewModel::class.java.simpleName
     private val RESPONSE_CLASS = "nama class"
-
-
 }

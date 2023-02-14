@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        tools:context=".view.main.ui.teacher.kelolasoal.guessQ.upload.UploadGuessQActivity">
+        tools:context=".view.main.ui.teacher.kelolasoal_old.guessQ.upload.UploadGuessQActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
