@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tribuanabagus.belajarbahasainggris.R
@@ -46,7 +46,7 @@ class DaftarIsiHafalanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val data = DaftarIsiHafalanFragmentArgs.fromBundle(arguments as Bundle).data
-        setToolbarTitle(data.title.toString())
+        prepareToolbar(data.title.toString())
         prepareView(data)
     }
 
@@ -144,10 +144,19 @@ class DaftarIsiHafalanFragment : Fragment() {
         }
     }
 
-    private fun setToolbarTitle(title: String) {
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
-        if ((activity as AppCompatActivity?)!!.supportActionBar != null) {
-            (activity as AppCompatActivity?)!!.supportActionBar!!.title = title
+//    private fun setToolbarTitle(title: String) {
+//        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+//        if ((activity as AppCompatActivity?)!!.supportActionBar != null) {
+//            (activity as AppCompatActivity?)!!.supportActionBar!!.title = title
+//        }
+//    }
+
+    private fun prepareToolbar(title: String) {
+        binding.toolbar.apply {
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+            setTitle(title)
         }
     }
 

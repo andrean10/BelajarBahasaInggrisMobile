@@ -1,10 +1,9 @@
 package com.tribuanabagus.belajarbahasainggris.view.main.ui.student.hapalan
 
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,7 +39,7 @@ class HafalanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        prepareToolbar()
+        prepareToolbar()
 
         isFromNilai = HafalanFragmentArgs.fromBundle(arguments as Bundle).isFromNilai
         prepareView()
@@ -123,25 +122,27 @@ class HafalanFragment : Fragment() {
         }
     }
 
-    private fun prepareToolbar() {
+//    private fun prepareToolbar() {
 //        setToolbar()
 
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-            }
+//        val menuHost: MenuHost = requireActivity()
+//        menuHost.addMenuProvider(object : MenuProvider {
+//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//            }
+//
+//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+//                if (menuItem.itemId == android.R.id.home) {
+//                    findNavController().navigateUp()
+//                }
+//                return false
+//            }
+//        })
+//    }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == android.R.id.home) {
-                    findNavController().navigateUp()
-                }
-                return false
-            }
-        })
-    }
-
-    private fun setToolbar() {
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+    private fun prepareToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onStart() {

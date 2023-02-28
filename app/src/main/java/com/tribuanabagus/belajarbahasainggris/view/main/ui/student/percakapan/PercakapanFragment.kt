@@ -39,7 +39,7 @@ class PercakapanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        prepareToolbar()
+        prepareToolbar()
 
         isFromNilai = PercakapanFragmentArgs.fromBundle(arguments as Bundle).isFromNilai
         prepareView()
@@ -120,6 +120,12 @@ class PercakapanFragment : Fragment() {
         with(binding) {
             pbLoading.visibility = if (state) View.VISIBLE else View.GONE
             layoutRv.visibility = if (state) View.GONE else View.VISIBLE
+        }
+    }
+
+    private fun prepareToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

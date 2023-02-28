@@ -37,9 +37,7 @@ class TutorialVideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        prepareToolbar()
 
         prepareView()
     }
@@ -96,6 +94,12 @@ class TutorialVideoFragment : Fragment() {
         val toPlayVideo =
             TutorialVideoFragmentDirections.actionTutorialVideoFragmentToPlayVideoFragment(data)
         findNavController().navigate(toPlayVideo)
+    }
+
+    private fun prepareToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onStart() {
